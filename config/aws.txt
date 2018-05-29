@@ -1,0 +1,2 @@
+access_key_id=AKIAJUOGDDG2KEJSQR7Q
+secret_key=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

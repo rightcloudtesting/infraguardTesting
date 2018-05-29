@@ -1,0 +1,80 @@
+<section class="Profilesection">
+    <div class="left" style="width: 10%;float: left;">
+        <ul>
+            <a href="#/"><li class="h1 add" style="margin-top:-20px;cursor: pointer;width:100%; height:50px;background:#2670B7; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:white; text-align:center; line-height:50px; font-weight:600; ">Home</li></a>
+            <a href="#/projectCron"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Cron</li></a>
+            <a href="#/automation"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Automation</li></a>
+        </ul>
+    </div>
+            <div class="companyDetailsBg addCompanyDetail">
+                <div class="profileHead left" style="margin-top:-15px;">List Instance for {{instanceData[0].customer_name}}
+                    <a href="#/listInstances"><button style="margin-left:43%;color:yellow;" type="button" class="btn btn-lg btn-primary btn-sm">Instance List</button></a>
+                    <a href="#/projectInstances" ng-click="setCustomerId()"><button type="button" class="btn btn-lg btn-primary btn-sm">Project View</button></a>
+                    <!--<a ng-click="syncInstanceData()" style="float: right"><button type="button" class="btn btn-primary btn-sm">Sync Instances</button></a>-->
+                </div>
+                <div class="form-group" style="width:25%;float:left;margin-top: 1.7%;">
+                    <div class="input-group">
+                      <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                      <input type="text" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" placeholder="Search for server name" ng-model="searchServer.serverName">
+                    </div>      
+                 </div>
+                <div class="pagination">
+                    <ul>
+                        <li ng-class="{disabled: noPrevious()}"><a ng-click="selectPrevious()">Previous</a></li>
+                        <li ng-repeat="page in pages" ng-class="{active: isActive(page)}"><a ng-click="selectPage(page)">{{page}}</a></li>
+                        <li ng-class="{disabled: noNext()}"><a ng-click="selectNext()">Next</a></li>
+                    </ul>
+                </div>
+                <table class="table" style="width:100%;margin-top: 25px;">
+                    <tr>
+                          <th>S.no</th>
+                          <th>
+                            <a ng-click="sortType = 'serverName'; sortReverse = !sortReverse">
+                              Server Name
+                              <span ng-show="sortType == 'serverName' && !sortReverse" class="fa fa-caret-down"></span>
+                              <span ng-show="sortType == 'serverName' && sortReverse" class="fa fa-caret-up ng-hide"></span>
+                            </a>
+                           </th>
+                           <th>
+                            <a ng-click="sortType = 'environment'; sortReverse = !sortReverse">
+                              Environment
+                              <span ng-show="sortType == 'environment' && !sortReverse" class="fa fa-caret-down"></span>
+                              <span ng-show="sortType == 'environment' && sortReverse" class="fa fa-caret-up ng-hide"></span>
+                            </a>
+                           </th>
+                           <th>
+                            <a ng-click="sortType = 'instanceId'; sortReverse = !sortReverse">
+                              Instance Id
+                              <span ng-show="sortType == 'instanceId' && !sortReverse" class="fa fa-caret-down"></span>
+                              <span ng-show="sortType == 'instanceId' && sortReverse" class="fa fa-caret-up ng-hide"></span>
+                            </a>
+                           </th>
+                           <th>
+                            <a ng-click="sortType = 'globalHostName'; sortReverse = !sortReverse">
+                              Public DNS Name
+                              <span ng-show="sortType == 'globalHostName' && !sortReverse" class="fa fa-caret-down"></span>
+                              <span ng-show="sortType == 'globalHostName' && sortReverse" class="fa fa-caret-up ng-hide"></span>
+                            </a>
+                           </th>
+                    </tr>
+                  <tr ng-repeat="row in instanceData.slice(((currentPage-1)*numPerPage), ((currentPage)*numPerPage)) | orderBy:sortType:sortReverse | filter:searchServer">
+                        <td>#{{numPerPage *(currentPage-1)+$index+1}}</td> 
+                        <td><a ng-click="showInstanceDetailsModel(row.raw_data,row.serverName)" style="cursor:pointer;">{{row.serverName}}</a></td>
+                        <td>{{row.environment}}</td>
+                        <td>{{row.instanceId}}</td>
+                        <td>{{row.globalHostName}} </td>
+                  </tr>
+              </table>
+                <div class="pagination">
+                    <ul>
+                        <li ng-class="{disabled: noPrevious()}"><a ng-click="selectPrevious()">Previous</a></li>
+                        <li ng-repeat="page in pages" ng-class="{active: isActive(page)}"><a ng-click="selectPage(page)">{{page}}</a></li>
+                        <li ng-class="{disabled: noNext()}"><a ng-click="selectNext()">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+</section>
+<style>
+    table tr td{text-align: left;}table tr th{text-align: left;font-weight: bold;}
+    .btn-xs,.btn-xs:hover{background-color: #17a0a2;border-color: #17a0a2;}
+</style>

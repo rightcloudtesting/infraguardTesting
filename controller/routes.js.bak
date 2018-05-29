@@ -1,0 +1,2257 @@
+var bodyParser = require("body-parser");
+var multer = require("multer");
+var bcryptPassw = require(process.cwd() + "/util/bcryptPassword");
+var db = require(process.cwd() + "/config/db");
+var urlencoded = bodyParser.urlencoded({extended: true});
+var speakeasy = require('speakeasy');// for MFA 
+var QRCode = require('qrcode');
+var keypair = require('keypair');
+var forge = require('node-forge');
+var cron = require('node-cron');
+var pair = keypair();
+var con = null;
+var storage = multer.diskStorage({
+  destination: './angular/images/profileImages/',
+  filename: function (req, file, cb) {
+  			var imageName = req.session.email + '.' + file.originalname.split('.')[file.originalname.split('.').length -1];
+            cb(null, imageName);
+        }
+});
+var upload = multer({ storage: storage }).single("file");
+
+// cron schedule for auto rotating server keys monthly
+cron.schedule('0 0 1 * * *', function(){
+
+if(con == null)
+con = db.openCon(con);
+con.query("SELECT distinct s.serverIP,u.email,s.id FROM users u INNER JOIN companydetails c ON u.id = c.companyCreator INNER JOIN projectdetails p ON c.id = p.company_id INNER JOIN servers s ON p.id = s.project_id WHERE autoKeyRotation = ?", [1], function(err, result){
+if(err)console.log(err.stack);
+console.log("cron server ips = : "+JSON.stringify(result));
+if(result.length>0){
+	/*var ipArray = [];
+	for(var i=0;i<result.length;i++){
+		var id = result[i].serverIP;
+		ipArray.push(id);
+	}
+	console.log("cron ips in array = : "+ipArray);*/
+	updateServerKey(result);
+}
+});
+   
+});
+
+// cron schedule to revoke server access for every active user daily cron.schedule('0 0 * * *', function(){
+cron.schedule('0 */8 * * * *', function(){
+  revokeServerAccess();
+});
+
+module.exports = function(app){
+app.use(bodyParser.json());
+app.get("/", function(request, response){
+
+	if(request.session.email) {
+	    response.sendFile(process.cwd() + "/angular/pages/dashBoard.html");
+	    response.status(200);
+	}
+	else {
+		response.sendFile(process.cwd() + "/angular/pages/homePage.html");
+		response.status(200);
+	}
+});
+
+app.get("/resetPassword", function(request, response){
+ 
+    var data = new Buffer(request.query.data, 'base64').toString().split("&");
+	var id = data[0].split("id=")[1];
+	var time = data[1].split("timeStamp=")[1];
+	var timeDiffHrs = (Date.now() - time)/(1000*60*60);
+
+	if(timeDiffHrs >= 24) {
+	    response.writeHead(200, {'Content-Type': 'text/plain'});
+	    response.end('Hello ! Your link has expired. It is valid for 24 Hrs only.\n');
+	}
+	else {
+		// show the password reset page
+		response.sendFile(process.cwd() + "/angular/pages/resetpwdPage.html");
+		response.status(200);
+	}
+});
+
+app.post("/updatePassword", urlencoded, function(req, res){
+	var userId = req.body.userId;
+	var passw = bcryptPassw.generateHash(req.body.pwd);
+	
+	if(con == null)
+	con = db.openCon(con);
+	con.query("update users set passw = ? where id = ?", [passw,userId], function(err, result) {
+	if (err) {
+		res.json({success : 0, err : err});
+		return;
+	}
+	else if(result.affectedRows > 0){
+	res.json({success : 1});
+	}
+	});
+	
+});
+
+app.get("/logout", function(req, res){
+	req.session.destroy(function(err) {
+	  if(err) {
+	    console.log(err);
+	  } else {
+	    res.redirect('/');
+	  }
+	});
+
+});
+
+app.post("/signupAction", urlencoded, function(req, res){
+	var email = req.body.email;
+	var uname = req.body.uname;
+	var passw = bcryptPassw.generateHash(req.body.passw);
+	var userRegistration = "self";
+	var data = {
+		email : email,
+		uname : uname,
+		passw : passw,
+		userRegistration : userRegistration
+	}
+	signupAction(req, res, data);
+});
+
+app.post("/loginAction", urlencoded, function(req, res){
+	var email = req.body.email;
+	var passw = req.body.passw;
+	var data = {
+		email : email,
+		passw : passw
+	};
+	loginAction(req, res, data);
+});
+
+app.get("/getUserData", function(req, res){
+	getUserData(req, res);
+});
+
+app.get("/getGroupData", function(req, res){
+	getGroupData(req, res);
+});
+
+app.post("/checkEmail", function(req, res) {
+	var email = req.body.email;
+	if(con == null)
+	con = db.openCon(con);
+	con.query("select * from users where email = ?", [email], function(err, result) {
+		if (err) console.log("check_email.error: ", err.stack);
+		if (result.length > 0) {
+			res.json({found: 1,result : result[0]});
+		} else {
+			res.json({found : 0});
+		}
+	});
+});
+
+app.post("/uploadImage", function(req, res) {
+if(con == null)
+con = db.openCon(con);
+upload(req, res, function(err){
+            if(err){
+                 res.json({success : 0, err_desc : err});
+                 return;
+            }
+            con.query("update users set userImage = ? where email = ?", [req.file.filename, req.session.email], function(err, result) {
+            	if(err){
+            		res.json({success : 0, err_desc : err});
+                 	return;
+             	}
+
+             	else if(result.affectedRows > 0){
+             		res.json({success : 1, err_desc : null});
+             	}
+             	
+            });
+            
+        })
+});
+
+app.post("/updateSSHKey", function(req, res) {
+if(con == null)
+con = db.openCon(con);
+con.query("update users set ssh_key = ? where email = ?", [req.body.sshKey, req.session.email], function(err, result) {
+if (err) {
+	res.json({success : 0, err_desc : err});
+	return;
+}
+else if(result.affectedRows > 0){
+res.json({success : 1, err_desc : null});
+}
+});
+});
+
+app.post("/save_profile_info", function(req, res) {
+if(con == null)
+con = db.openCon(con);
+con.query("update users set shell = ?, linuxName = ? where email = ?", 
+	[req.body.shell, req.body.linux_uname, req.session.email], 
+	function(err, result){
+		if(err){
+			res.json({success : 0, err_desc : err});
+			return;
+		}
+		else if(result.affectedRows > 0){
+			res.json({success : 1, err_desc : null});
+		}
+});
+});
+
+app.post("/createCompany", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = {
+companyName : req.body.cname,
+companyCreator : req.session.uid
+};
+
+con.query("select * from companydetails where companyCreator = ? and companyName = ? and is_deleted=0", [req.session.uid,req.body.cname], function(err, result){
+	if(err){
+		res.json({success : 2, err_desc : err});
+		return;
+	}
+	else if(result.length > 0){
+		res.json({success : 2, err_desc : "Company Already Exists!"});
+		return;
+	}
+	else{
+		con.query("insert into companydetails set ?", [data], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+	}
+	
+	});
+});
+
+
+app.post("/editCompany", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = {
+companyName : req.body.cname,
+companyId : req.body.cid,
+companyCreator : req.session.uid
+};
+
+con.query("select * from companydetails where companyCreator = ? and companyName = ? and is_deleted=0", [req.session.uid,req.body.cname], function(err, result){
+	if(err){
+		res.json({success : 2, err_desc : err});
+		return;
+	}
+	else if(result.length > 0){
+		res.json({success : 2, err_desc : "Company Already Exists!"});
+		return;
+	}
+	else{
+		con.query("update companydetails set companyName = ? where id = ?", [req.body.cname,req.body.cid], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+	}
+	
+	});
+});
+
+
+app.post("/deleteCompany", function(req, res){
+if(con == null)
+con = db.openCon(con);
+con.query("select * from companydetails where companyCreator = ? and companyName = ?", [req.session.uid,req.body.cname], function(err, result){
+	if(err){
+		res.json({success : 2, err_desc : err});
+		return;
+	}
+	else if(result.length > 0){
+		res.json({success : 2, err_desc : "Company Already Exists!"});
+		return;
+	}
+	else{
+		con.query("update companydetails set is_deleted = ? where id = ?", [1,req.body.cid], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+	}
+	
+	});
+});
+
+app.post("/createProject", function(req, res) {
+if(con == null)
+con = db.openCon();	
+var data = {
+projectName : req.body.pname,
+company_id : req.body.cid
+};
+
+con.query("select * from projectdetails where projectName = ? and company_id = ?", [req.body.pname,req.body.cid], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	else if(result.length > 0){
+		res.json({success : 2, err_desc : "Project Already Exists!"});
+		return;
+	}
+	else{
+		con.query("insert into projectdetails set ?", [data], function(err, result) {
+		if(err){
+			console.log(err.stack);
+			res.json({success: 0, err_desc: err});
+		}
+		else
+			res.json({success: 1, err_desc: null, row_id: result.insertId});
+	   });
+	}
+	
+	});
+});
+
+app.post("/editProject", function(req, res) {
+if(con == null)
+con = db.openCon();	
+var data = {
+projectName : req.body.pname,
+company_id : req.body.cid,
+projectId : req.body.pid,
+};
+
+con.query("select * from projectdetails where projectName = ? and company_id = ?", [req.body.pname,req.body.cid], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	else if(result.length > 0){
+		res.json({success : 2, err_desc : "Project Already Exists!"});
+		return;
+	}
+	else{
+		con.query("update projectdetails set projectName = ? where id = ?", [req.body.pname,req.body.pid], function(err, result){
+		if(err){
+			console.log(err.stack);
+			res.json({success: 0, err_desc: err});
+		}
+		else
+			res.json({success: 1, err_desc: null, row_id: result.insertId});
+	   });
+	}
+	
+	});
+});
+
+app.post("/getProject", function(req, res) {
+if(con == null)
+	con = db.openCon(con);
+var obj = {};
+Promise.all([
+
+	new Promise((resolve, reject) => {
+		con.query("select * from projectdetails where id = ?", [req.body.id], function(err, result) {
+			if(err)console.log(err.stack);
+			if(result.length > 0){
+				resolve(result[0]);
+			}
+			resolve(null);
+		});
+	})
+
+]).then((results) => {
+obj.project = results[0];
+res.status(200).json(obj);
+});
+});
+
+app.post("/getProjectPagedetails", function(req, res) {
+if(con == null)	
+	con = db.openCon(con);
+var obj = {};
+Promise.all([
+	new Promise((resolve, reject) => {
+		con.query("select * from companydetails where id = ? ", [req.body.id], function(err, result) {
+			if(err)console.log(err.stack);
+			if(result.length > 0){
+				resolve(result[0]);
+			}
+			resolve(null);
+		});
+	}),
+	new Promise((resolve, reject) => {
+                        var sql = "SELECT p.* FROM projectdetails p inner join companydetails c on (c.id=p.company_id) WHERE p.company_id = "+req.body.id+" and c.companyCreator ="+req.session.uid+" union select p.* FROM projectdetails p inner join group_company_project gcp on(p.id=gcp.project_id and gcp.is_deleted=0) where gcp.compnay_id="+req.body.id;
+			//con.query("SELECT * FROM projectdetails WHERE company_id = ? ", [req.body.id], function(err, result){
+                        con.query(sql,'0', function(err, result){
+				if(err)console.log(err.stack);
+					if(result.length > 0){
+						resolve(result);
+					}
+					resolve(null);
+					
+				});
+			
+		}),
+	new Promise((resolve, reject) => {
+			con.query("SELECT * FROM projectdetails p INNER JOIN servers s ON p.id = s.project_id WHERE p.company_id = ? ", [req.body.id], function(err, result){
+				if(err)console.log(err.stack);
+				if(result.length > 0){
+					resolve(result);
+				}
+				resolve(null);
+			});
+		})
+	
+
+])
+.then((results) => {
+	obj.company = results[0];
+	obj.projects = results[1];
+	obj.servers = results[2];
+	res.status(200).json(obj);
+});
+
+});
+
+
+app.post("/getServerPageDetails", function(req, res){
+	if(con == null)
+	con = db.openCon(con);
+	var obj = {};
+	Promise.all([
+		new Promise((resolve, reject) => {
+			con.query("select * from projectdetails where id = ? ", [req.body.id], function(err, result) {
+				if(err)console.log(err.stack);
+				if(result.length > 0){
+					resolve(result[0]);
+				}
+				resolve(null);
+			});
+		}),
+		new Promise((resolve, reject) => {
+				con.query("SELECT * FROM servers WHERE project_id = ? ", [req.body.id], function(err, result){
+					if(err)console.log(err.stack);
+						if(result.length > 0){
+							resolve(result);
+						}
+						resolve(null);
+						
+					});
+				
+			})
+	])
+	.then((results) => {
+		obj.project = results[0];
+		obj.servers = results[1];
+		res.status(200).json(obj);
+	});
+});
+
+app.get("/getProjectData", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var obj = {};
+obj.projectdata = null;
+obj.companydata = null;
+Promise.all([
+	
+		new Promise((resolve, reject) => {
+			con.query("SELECT * FROM companydetails WHERE companyCreator = ? ", [req.session.uid], function(err, result){
+				if(err)console.log(err.stack);
+				if(result.length > 0){
+					resolve(result);
+				}
+				resolve(null);
+				
+			});
+
+			
+		}),
+
+		new Promise((resolve, reject) => {
+			con.query("SELECT * FROM companydetails c INNER JOIN projectdetails p ON c.id = p.company_id WHERE c.companyCreator = ? ", [req.session.uid], function(err, result){
+				if(err)console.log(err.stack);
+					if(result.length > 0){
+						resolve(result);
+					}
+					resolve(null);
+					
+				});
+			
+		})
+		
+	]).then((results) => {
+		obj.companydata = results[0];
+		obj.projectdata = results[1];
+		res.status(200).json(obj);
+	});
+
+
+
+});
+
+app.post("/showUsers", function(req, res){
+if(con == null)
+con = db.openCon(con);
+con.query("select * from users where email like ?", [req.body.email], function(err, result){
+if(err)console.log(err.stack);
+res.status(200).json(result);
+});
+});
+
+app.post("/showUsersOnServer", function(req, res){
+if(con == null)
+con = db.openCon(con);
+con.query("select * from servers where serverIP = ?", [req.body.serverIp], function(err, result){
+if(err)console.log(err.stack);
+res.status(200).json(result);
+});
+});
+
+app.post("/showPrivilegeUsers", function(req, res){
+if(con == null)
+con = db.openCon(con);
+con.query("select * from servers where serverIP = ?", [req.body.serverIp], function(err, result){
+if(err)console.log(err.stack);
+res.status(200).json(result);
+});
+});
+
+app.post("/getUserRole", function(req, res){
+if(con == null)
+con = db.openCon(con);
+con.query("select * from userRole where uname = ?", [req.body.uname], function(err, result){
+if(err)console.log(err.stack);
+if(result != null && result.length > 0){
+res.status(200).json(result[0].role);
+}else{
+	var role = "user";
+	res.status(200).json(role);
+}
+});
+});
+
+app.post("/getUserEmail", function(req, res){
+if(con == null)
+con = db.openCon(con);
+con.query("select * from users where uname = ?", [req.body.uname], function(err, result){
+if(err)console.log(err.stack);
+if(result != null && result.length > 0){
+res.status(200).json(result[0].email);
+}else{
+	res.status(200).json(null);
+}
+});
+});
+
+app.post("/addUserToServer", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = req.body;
+var record = {};
+/*var pubKey = forge.pki.publicKeyFromPem(pair.public);
+var sshpubKey = forge.ssh.publicKeyToOpenSSH(pubKey, data.user.uname+'@InfraGuard');
+var publicKey = sshpubKey;
+var privateKey = pair.private; */
+if(data.search == 1){
+record = {
+	serverIp: data.serverIp,
+	activityName: "addUser",
+	requiredData: JSON.stringify({
+		//publicKey: data.user.publicKey,
+		userName: data.user.uname,
+		shell: data.user.shell
+	}),
+	status: "0"
+};	
+Promise.all([
+new Promise((resolve, reject) => 
+{
+	con.query("insert into agentActivities set ?", [record], function(err, result){
+		if(err)console.log(err.stack);
+			resolve(result);
+	});
+})
+]).then((results) => {
+	res.status(200).json({success: 1});
+});
+}
+else{
+Promise.all([
+new Promise((resolve, reject) => {
+	con.query("select * from users where email = ?", [data.user.email], function(err, result){
+		if(err){
+			console.log(err.stack);
+			resolve(null);
+		}
+		else if(result.length <= 0){
+			//data.user.publicKey = publicKey;
+			//data.user.privateKey = privateKey; 
+			data.user.passw = bcryptPassw.generateHash(data.user.passw);
+			con.query("insert into users set ?", [data.user], function(err1, result1){
+				if(err1){
+					console.log(err1.stack);
+					resolve(null);
+				}
+				resolve(null);
+			});
+		}
+		else{
+			resolve(0);
+		}
+		
+	});
+	
+}),
+new Promise((resolve, reject) => {
+	con.query("select * from users where email = ?", [data.user.email], function(err, result){
+		if(err){
+			console.log(err.stack);
+			resolve(null);
+		}
+		else if(result.length > 0){
+			record = {
+				serverIp: data.serverIp,
+				activityName: "addUser",
+				requiredData: JSON.stringify({
+					//publicKey: result[0].publicKey,
+					userName: result[0].uname,
+					shell: result[0].shell
+					
+				}),
+				status: "0"
+				};
+		}
+		else if(result.length <= 0){
+			record = {
+				serverIp: data.serverIp,
+				activityName: "addUser",
+				requiredData: JSON.stringify({
+					//publicKey: publicKey,
+					userName: data.user.uname,
+					shell: data.user.shell
+					
+				}),
+				status: "0"
+			};
+		}
+			con.query("insert into agentActivities set ?", [record], function(err1, result1){
+				if(err1){
+					console.log(err1.stack);
+					resolve(null);
+				}
+				resolve(1);
+			});
+		
+			resolve(0);
+		
+	});
+
+})
+]).then((results) => {
+	//res.status(200).json({success: 1});
+	res.status(200).json({success: 1});
+});
+
+}
+
+});
+
+app.post("/deleteUserFromServer", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = req.body;
+var record = null;
+
+if(data.search == 1){
+record = {
+	serverIp: data.serverIp,
+	activityName: "deleteUser",
+	requiredData: JSON.stringify({
+		userName: data.uname
+	}),
+	status: "0"
+};
+Promise.all([
+new Promise((resolve, reject) => {
+	con.query("insert into agentActivities set ?", [record], function(err, result){
+		if(err){
+			console.log(err.stack);
+			resolve(null);
+		}
+		resolve(result);
+	});
+})
+]).then((results) => {
+	res.status(200).json({success: 1});
+});
+}
+else if(data.search == 2){
+record = {
+	serverIp: data.serverIp,
+	activityName: "deleteUser",
+	requiredData: JSON.stringify({
+		userName: data.uname
+	}),
+	status: "0"
+};
+Promise.all([
+new Promise((resolve, reject) => {
+
+	con.query("select * from servers where serverIP = ?", [data.serverIp], function(err, result){
+		if(err){
+			console.log(err.stack);
+			resolve(null);
+		}
+		else if(result.length > 0){
+			var users = result[0].userList;
+			if(users.indexOf(data.uname) < 0){
+				resolve(0);
+			}else{
+			con.query("insert into agentActivities set ?", [record], function(err1, result1){
+				if(err1){
+					console.log(err1.stack);
+					resolve(null);
+				}
+				resolve(1);
+			});
+			}
+		}
+		else{
+			resolve(0);
+		}
+		
+	});
+
+})
+]).then((results) => {
+	res.status(200).json({success: results[0]});
+});
+}
+else{
+	res.status(200).json({success: 0});
+}
+});
+
+app.post("/changeUserPrivilege", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = req.body;
+var record = null;
+record = {
+	serverIp: data.serverIp,
+	activityName: "changePrivilege",
+	requiredData: JSON.stringify({
+		userName: data.uname,
+		privilege: data.userRole,
+        email: data.userEmail
+	}),
+	status: "0"
+};
+Promise.all([
+	new Promise((resolve, reject) => {
+	con.query("insert into agentActivities set ?", [record], function(err, result){
+		if(err){
+			console.log(err.stack);
+			resolve(null);
+		}
+		resolve(result);
+	});
+})
+]).then((results) => {
+	res.status(200).json({success: 1});
+});
+});
+
+app.post("/lockDownServer", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = req.body;
+var record = null;
+
+Promise.all([
+new Promise((resolve, reject) => {
+
+	con.query("select userList from servers where serverIP = ?", [data.serverIp], function(err, result){
+		if(err){
+			console.log(err.stack);
+			resolve(null);
+		}
+		else if(result.length > 0){
+			var users = result[0].userList;
+				record = {
+				serverIp: data.serverIp,
+				activityName: "lockDownServer",
+				requiredData: JSON.stringify({
+					userList: users
+				}),
+				status: "0"
+			    };
+			con.query("insert into agentActivities set ?", [record], function(err1, result1){
+				if(err1){
+					console.log(err1.stack);
+					resolve(null);
+				}
+				resolve(1);
+			});
+		}
+		else{
+			resolve(0);
+		}
+	});
+})
+]).then((results) => {
+	res.status(200).json({success: results[0]});
+});
+});
+
+app.post("/unlockServer", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = req.body;
+var record = null;
+
+Promise.all([
+new Promise((resolve, reject) => {
+
+	con.query("select userList from servers where serverIP = ?", [data.serverIp], function(err, result){
+		if(err){
+			console.log(err.stack);
+			resolve(null);
+		}
+
+		else if(result.length > 0){
+			var users = result[0].userList;
+				record = {
+				serverIp: data.serverIp,
+				activityName: "unlockServer",
+				requiredData: JSON.stringify({
+					userList: users
+				}),
+				status: "0"
+			    };
+			con.query("insert into agentActivities set ?", [record], function(err1, result1){
+				if(err1){
+					console.log(err1.stack);
+					resolve(null);
+				}
+				resolve(1);
+			});
+		}
+		else{
+			resolve(0);
+		}
+	});
+})
+]).then((results) => {
+	res.status(200).json({success: results[0]});
+});
+});
+
+app.post("/mfaPageData", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var secret = null;
+var qrcode = null;
+if(req.session.uid != undefined){
+	con.query("select * from users where id = ?", [req.session.uid], function(err, result){
+		if(err){
+			console.log(err.stack);
+			res.json({success : 0});
+		}
+		if(result.length>0){
+           if(result[0].mfaEnabled == 1){
+           	 secret = JSON.parse(result[0].mfaSecret);
+	           	QRCode.toDataURL(secret.otpauth_url, function(err, data_url) {
+	             qrcode = data_url ;// get QR code data URL
+	             res.json({mfaEnabled : 1,qrcode : qrcode,secret:secret,name:result[0].uname});
+	            });
+	        }
+            else {
+            	var name = result[0].uname+"@InfraGuardDashBoard"
+               secret = speakeasy.generateSecret({length: 32,name:name,issuer:"InfraGuard"});
+               QRCode.toDataURL(secret.otpauth_url, function(err, data_url) {
+	             qrcode = data_url ;// get QR code data URL
+	             res.json({mfaEnabled : 0,qrcode : qrcode,secret:secret,name:result[0].uname });
+	            });
+            }
+		}
+	});
+}else{
+	res.json({success : 0});
+     }
+});
+
+
+app.post("/enableMFA", function(req, res){
+	if(con == null)
+	con = db.openCon(con);
+	var obj = req.body;
+	obj.backupCodeUsed = 0;
+	var secretObj = JSON.stringify(obj);
+
+	console.log("enableMFA secretObj = : "+JSON.stringify(secretObj)+"UID = : "+req.session.uid);
+	if(req.session.uid != undefined){
+		con.query("update users set mfaEnabled = ? , mfaSecret = ? where id = ?", [1,secretObj,req.session.uid], function(err, result){
+			if(err){
+				console.log(err.stack);
+				res.json({success : 0});
+			}else{
+			console.log("743 . result= : "+JSON.stringify(result));
+			res.json({success : 1});
+		     }
+		});
+	}else{
+		res.json({success : 0});
+	}
+});
+
+app.post("/disableMFA", function(req, res){
+	if(con == null)
+	con = db.openCon(con);
+	var secretObj = req.body;
+	console.log("disableMFA secretObj = : "+JSON.stringify(secretObj)+"UID = : "+req.session.uid);
+	if(req.session.uid != undefined){
+		con.query("update users set mfaEnabled = ? , mfaSecret = ? where id = ?", [0,null,req.session.uid], function(err, result){
+			if(err){
+				console.log(err.stack);
+				res.json({success : 0});
+			}else {
+			console.log("757 . result= : "+JSON.stringify(result));
+			res.json({success : 1});
+		    }
+		});
+	}else{
+		res.json({success : 0});
+	}
+});
+
+app.post("/matchMFAToken", function(req, res){
+	if(con == null)
+	con = db.openCon(con);
+	var token = req.body.token;
+	console.log("MFA token = : "+JSON.stringify(token) +"    Email ID = : "+req.body.email);
+	con.query("select * from users where email = ?", [req.body.email], function(err, result){
+		if(err){
+			console.log(err.stack);
+			res.json({success : 0});
+		}
+		else if(result.length>0){
+			var secret = JSON.parse(result[0].mfaSecret);
+			var mfatoken = speakeasy.totp({secret: secret.base32,encoding: 'base32'});
+			console.log("mfatoken = "+mfatoken+"     usertoken = "+token+ " backup = : "+secret.hex);
+			if(mfatoken == token){
+				req.session.email=result[0].email;
+				req.session.uid = result[0].id;
+			    res.json({success : 1});
+				console.log(" token matched ");
+			}else if(token == secret.hex) {
+				if(secret.backupCodeUsed == 1){
+					res.json({success : 0,errmsg : "Backup Token Expired !"});
+				}else{
+					secret.backupCodeUsed = 1;
+					secret = JSON.stringify(secret);
+					console.log(" updated secret = ; "+JSON.stringify(secret));
+					con.query("update users set  mfaSecret = ? where email = ?", [secret,req.body.email], function(err, result1){
+						if(err){
+							console.log(err.stack);
+							res.json({success : 0});
+						}else {
+						req.session.email=result[0].email;
+						req.session.uid = result[0].id;
+					    res.json({success : 1});
+						console.log("backup token matched ");
+					    }
+					});
+     		    }
+			}else{
+				res.json({success : 0,errmsg : "Token not matched !"});
+			}
+		}
+		else{
+		  res.json({success : 0 ,errmsg : "ERROR !"});
+		}
+	});
+});
+
+app.post("/resetMFAToken", function(req, res){
+	if(con == null)
+	con = db.openCon(con);
+	var email = req.body.email;
+	var userName = req.body.userName;
+	var name = userName+"@InfraGuardDashBoard";
+	var secret = speakeasy.generateSecret({length: 32,name:name,issuer:"InfraGuard"});
+	secret.backupCodeUsed = 0;
+	var secretToString = JSON.stringify(secret);
+	con.query("update users set  mfaSecret = ?,mfaEnabled = ? where email = ?", [secretToString,1,email], function(err, result){
+		if(err){
+			console.log(err.stack);
+			res.json({success : 0});
+		}
+		else {
+		  QRCode.toDataURL(secret.otpauth_url, function(err, data_url) {
+	          qrcode = data_url ;// get QR code data URL for mailing
+	          saveQRCodeImg(qrcode,email);
+	          res.json({success : 1,secret:secret.hex });
+	      });
+        }
+	});
+});
+
+app.post("/stopServerKeyRotation", function(req, res){
+	if(con == null)
+	con = db.openCon(con);
+	con.query("update servers set autoKeyRotation = ? where project_id = ?", [0,req.body.projectId], function(err, result){
+	if(err)console.log(err.stack);
+	res.status(200).json({success : 1});
+	});
+});
+
+app.post("/startServerKeyRotation", function(req, res){
+	if(con == null)
+	con = db.openCon(con);
+	con.query("update servers set autoKeyRotation = ? where project_id = ?", [1,req.body.projectId], function(err, result){
+	if(err)console.log(err.stack);
+	res.status(200).json({success : 1});
+	});
+});
+
+app.post("/updateServerKeyForProject", function(req, res){
+	if(con == null)
+	con = db.openCon(con);
+	con.query("SELECT distinct s.serverIP,u.email,s.id FROM users u INNER JOIN companydetails c ON u.id = c.companyCreator INNER JOIN projectdetails p ON c.id = p.company_id INNER JOIN servers s ON p.id = s.project_id WHERE s.project_id = ?", [req.body.projectId], function(err, result){
+	//SELECT  s.serverIP,u.email FROM users u INNER JOIN companydetails c ON u.id = c.companyCreator INNER JOIN projectdetails p ON c.id = p.company_id INNER JOIN servers s ON c.id = s.project_id WHERE s.project_id = ?;
+	if(err)console.log(err.stack);
+	console.log(" server ips = : "+JSON.stringify(result));
+	if(result.length>0){
+		console.log(" Length = : "+result.length);
+		/*var ipArray = [];
+		for(var i=0;i<result.length;i++){
+			var id = result[i].serverIP;
+			ipArray.push(id);
+		}
+		console.log(" ips in array = : "+ipArray);*/
+		updateServerKey(result);
+	}
+	res.status(200).json({success : 1});
+	});
+});
+
+app.post("/requestServerAccess", function(req, res){
+	var email = req.session.email;
+	var userName = req.body.name.toLowerCase();
+	console.log(" email : "+email+"  serverIp = : "+req.body.serverIp+"  name = : "+req.body.name.toLowerCase());
+	var pair = keypair();
+	var pubKey = forge.pki.publicKeyFromPem(pair.public);
+	var sshpubKey = forge.ssh.publicKeyToOpenSSH(pubKey, userName+'@InfraGuard');
+	var privateKey = pair.private; 
+	var serverIp = req.body.serverIp;
+	var email = req.session.email;
+	var record = {
+				serverIp: req.body.serverIp,
+				activityName: "addPubKey",
+				requiredData: JSON.stringify({
+					publicKey: sshpubKey,
+					privKey: privateKey,
+					userName: userName,
+					email : email
+				}),
+				status: "0"
+			    };
+	con.query("insert into agentActivities set ?", [record], function(err1, result1){
+		if(err1){
+			console.log(err1.stack);
+			res.json({success : 0});
+		}
+		res.json({success : 1});
+	});
+});
+
+app.post("/createRole", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = {
+roleName : req.body.rname,
+roleDesc : req.body.rdesc,
+policyId : req.body.rpolicy,
+};
+con.query("select * from companydetails where companyCreator = ? and companyName = ? and is_deleted=0", [req.session.uid,req.body.cname], function(err, result){
+	if(err){
+		res.json({success : 2, err_desc : err});
+		return;
+	}
+	else if(result.length > 0){
+		res.json({success : 2, err_desc : "Company Already Exists!"});
+		return;
+	}
+	else{
+		con.query("insert into roles set ?", [data], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+	}
+	
+	});
+});
+
+app.post("/editRole", function(req, res){
+if(con == null)
+con = db.openCon(con);
+		con.query("update roles set roleName = ? , roleDesc= ? , policyId = ? where id = ?", [req.body.rname,req.body.rdesc,req.body.rpolicy,req.body.rid], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+});
+
+app.post("/deleteRole", function(req, res){
+if(con == null)
+con = db.openCon(con);
+        con.query("update roles set is_deleted = ? where id = ?", [1,req.body.rid], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+});
+
+app.post("/getRole", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query('select * from roles where is_deleted=0', function(error, results){
+        if ( error ){
+            res.status(400).send(error.stack);
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+
+app.post("/getPoliceElements", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query('select * from policy_elements where is_deleted=0', function(error, results){
+        if ( error ){
+            res.status(400).send(error.stack);
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+
+app.post("/getPolicies", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query('select * from policy where is_deleted=0', function(error, results){
+        if ( error ){
+            res.status(400).send(error.stack);
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+
+app.post("/getPolicyElements", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query('select pem.policy_element_id from policy p inner join policy_element_map pem on (p.id=pem.policy_id  and pem.is_deleted=0) where p.id='+req.body.polid+ " order by pem.policy_element_id", function(error, results){
+        if ( error ){
+            res.status(400).send(error.stack);
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+
+app.post("/getGroupElements", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    //var sql ='select gcp.compnay_id, GROUP_CONCAT(gcp.project_id) as project_id from infra_group ig inner join group_company_project gcp on (ig.id=gcp.group_id and ig.is_deleted=0 and gcp.is_deleted=0) where ig.id='+req.body.groupId+' group by gcp.compnay_id';
+    var sql= 'select gcp.compnay_id,gcp.project_id from infra_group ig inner join group_company_project gcp on (ig.id=gcp.group_id and ig.is_deleted=0 and gcp.is_deleted=0) where ig.id='+req.body.groupId+' order by gcp.compnay_id';
+    con.query(sql, function(error, results){
+        if ( error ){
+            res.status(400).send(error.stack);
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+
+app.post("/getUsers", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query('select u.id,u.email,u.uname,u.roleId,r.roleName,u.groupId from users u inner join roles r on (u.roleId =r.id ) where u.is_deleted=0 and u.roleId is not NULL', function(error, results){
+        if ( error ){
+            res.status(400).send(error.stack);
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+app.post("/getUserAcessElements", function(req, res){
+if(con == null)
+    con = db.openCon(con);
+    var sql ="select pem.policy_element_id,u.roleId from users u inner join roles r on (u.roleId=r.id) inner join policy_element_map pem on (pem.policy_id=r.policyId) where u.email = '"+req.session.email+"' and r.is_deleted=0 and pem.is_deleted=0";
+    con.query( sql,'0', function(error, results){
+        if ( error ){
+            res.status(400).send(error.stack);
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+app.post("/createPolicy", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = {
+policyName : req.body.polname,
+policyDesc : req.body.poldesc,
+};
+con.query("select * from policy where policyName = ? and is_deleted=0", [req.body.polname], function(err, result){
+	if(err){
+		res.json({success : 2, err_desc : err});
+		return;
+	}
+	else if(result.length > 0){
+		res.json({success : 2, err_desc : "Policy Already Exists!"});
+		return;
+	}
+	else{
+		con.query("insert into policy set ?", [data], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+        if(result.insertId){
+            var sql = "insert into policy_element_map (policy_id,policy_element_id) values ";
+            for(var i=0;i<req.body.elements.length;i++)
+              sql += "('"+result.insertId+ "','" + req.body.elements[i] + "'),";
+              sql = sql.substr(0,sql.length-1);
+            con.query(sql,'0', function(err, result){
+            if(err){
+                    res.json({success : 0, err_desc : err});
+                    return;
+            }
+           });
+        }
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+	}
+	
+	});
+});
+
+
+app.post("/editPolicy", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var policyElementsbyId = [];
+con.query("update policy set policyName = ? , policyDesc= ? where id = ?", [req.body.polname,req.body.poldesc,req.body.polid], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+        if(req.body.polid){
+             con.query("select policy_element_id from policy_element_map where policy_id = ? and is_deleted=0 ", [req.body.polid], function(err, result){
+                 if(result.length > 0){
+                     for (var i = 0, l = result.length; i < l; i++) {
+                          policyElementsbyId[i.toString()] = result[i].policy_element_id;
+                          
+                    }
+                    var c=[];
+                    j=0;
+                    for (var i=0; i < req.body.elements.length; ++i){
+                        if (policyElementsbyId.indexOf(req.body.elements[i]) != -1)
+                            c[j++] = req.body.elements[i];
+                    }
+                    
+                    if(req.body.elements && c){
+                        for (var j=0; j < req.body.elements.length; j++){
+                            if (c.indexOf(req.body.elements[j]) > -1) {
+                                
+                            }else{
+                                var sql = "insert into policy_element_map (policy_id,policy_element_id) values ";
+                                sql += "('"+req.body.polid+ "','" + req.body.elements[j] + "')";
+                                con.query(sql,'0', function(err, result){
+                                });
+                            }
+                        }
+                    }
+                    if(policyElementsbyId && c){
+                        for (var j=0; j < policyElementsbyId.length; j++){
+                            if (c.indexOf(policyElementsbyId[j]) > -1) {
+                                
+                            }else{
+                                con.query("update policy_element_map set is_deleted=1 where policy_element_id= ? and policy_id= ? ",[policyElementsbyId[j],req.body.polid], function(err, result){
+                                });
+                            }
+                        }
+                    }
+                }else{
+                    for (var j=0; j < req.body.elements.length; j++){
+                                var sql = "insert into policy_element_map (policy_id,policy_element_id) values ";
+                                sql += "('"+req.body.polid+ "','" + req.body.elements[j] + "')";
+                                con.query(sql,'0', function(err, result){
+                                });
+                        }
+                }
+           });
+        }
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+});
+
+
+app.post("/deletePolicy", function(req, res){
+if(con == null)
+con = db.openCon(con);
+        con.query("update policy set is_deleted = ? where id = ?", [1,req.body.polid], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+});
+
+app.post("/createUser", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = {
+email : req.body.uEmail,
+uname : req.body.uName,
+passw : bcryptPassw.generateHash(req.body.uPass),
+mfaEnabled : 0,
+roleId : req.body.uRole,
+};
+con.query("select * from users where email = ? and is_deleted=0", [req.body.uEmail], function(err, result){
+	if(err){
+		res.json({success : 2, err_desc : err});
+		return;
+	}
+	else if(result.length > 0){
+		res.json({success : 2, err_desc : "Email Already Exists!"});
+		return;
+	}
+	else{
+                var pubKey = forge.pki.publicKeyFromPem(pair.public);
+                var sshpubKey = forge.ssh.publicKeyToOpenSSH(pubKey, req.body.uName+'@InfraGuard');
+                data.publicKey = sshpubKey;
+                data.privateKey = pair.private;
+                data.shell = "/bin/bash";
+                data.linuxName = req.body.uName;
+		con.query("insert into users set ?", [data], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid ,key:pair.private});
+        for(var i=0;i<req.body.uGroup.length;i++){
+            var sql = "insert into user_groups (user_id,group_id) values ( "+result.insertId+","+req.body.uGroup[i]+")";
+                con.query(sql,'0', function(err, result){
+            });
+       }
+	});
+	}
+	
+	});
+});
+
+app.post("/editUser", function(req, res){
+if(con == null)
+con = db.openCon(con);
+		con.query("update users set uname = ? , roleId= ?   where id = ?", [req.body.uName,req.body.uRole,req.body.uId], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+        var existingGroups = [];
+        var string = req.body.uGroup.toString();
+        req.body.uGroup = JSON.parse("[" + string + "]");
+        var update_sql="select group_id from user_groups where is_deleted=0 and user_id = "+req.body.uId;
+        con.query(update_sql,'0', function(err, result){
+            if(result.length > 0){
+                     for (var i = 0, l = result.length; i < l; i++) {
+                          existingGroups[i.toString()] = result[i].group_id;
+                    }
+                    var c=[];
+                    j=0;
+                    for (var i=0; i < req.body.uGroup.length; ++i){
+                        if (existingGroups.indexOf(req.body.uGroup[i]) != -1){
+                            c[j++] = req.body.uGroup[i];}
+                    }
+                    if(req.body.uGroup && c){
+                        for (var j=0; j < req.body.uGroup.length; j++){
+                            if (c.indexOf(req.body.uGroup[j]) > -1) {
+                            }else{
+                                var sql = "insert into user_groups (user_id,group_id) values ";
+                                sql += "('"+req.body.uId+ "','" + req.body.uGroup[j] + "')";
+                                con.query(sql,'0', function(err, result){
+                                });
+                            }
+                        }
+                    }
+                    if(existingGroups && c){
+                        for (var j=0; j < existingGroups.length; j++){
+                            if (c.indexOf(existingGroups[j]) > -1) {
+                                
+                            }else{
+                                con.query("update user_groups set is_deleted=1 where user_id= ? and group_id= ? ",[req.body.uId,existingGroups[j]], function(err, result){
+                                });
+                            }
+                        }
+                    }
+                    }else{
+                    for (var j=0; j < req.body.uGroup.length; j++){
+                                var sql = "insert into user_groups (user_id,group_id) values ";
+                                sql += "('"+req.body.uId+ "','" + req.body.uGroup[j] + "')";
+                                con.query(sql,'0', function(err, result){
+                                });
+                        }
+                }
+        });
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+});
+
+app.post("/deleteUser", function(req, res){
+if(con == null)
+con = db.openCon(con);
+        con.query("update users set is_deleted = ? where id = ?", [1,req.body.uId], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+});
+app.post("/getGroups", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query('select * from infra_group where is_deleted=0', function(error, results){
+        if ( error ){
+            res.status(400).send(error.stack);
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+
+app.post("/createGroup", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = {
+groupName : req.body.groupname,
+groupDesc : req.body.groupdesc,
+is_deleted : 0,
+};
+con.query("select * from infra_group where groupName = ? and is_deleted=0", [req.body.groupname], function(err, result){
+	if(err){
+		res.json({success : 2, err_desc : err});
+		return;
+	}
+	else if(result.length > 0){
+		res.json({success : 2, err_desc : "Group Already Exists!"});
+		return;
+	}
+	else{
+		con.query("insert into infra_group set ?", [data], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+        if(result.insertId){
+            var sql = "insert into group_company_project (group_id,compnay_id,project_id) values ";
+            for(var i=0;i<req.body.companyIds.length;i++){
+                for(var j=0;j<req.body.compnayProjects[req.body.companyIds[i]].length;j++){
+                  sql += "('"+result.insertId+ "','" + req.body.companyIds[i] + "','" + req.body.compnayProjects[req.body.companyIds[i]][j] + "'),";
+                }
+            }
+            sql = sql.substr(0,sql.length-1);
+            con.query(sql,'0', function(err, result){
+            if(err){
+                    res.json({success : 0, err_desc : err});
+                    return;
+            }
+           });
+        }
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+	}
+	
+	});
+});
+
+app.post("/editGroup", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = {
+groupName : req.body.groupname,
+groupDesc : req.body.groupdesc,
+is_deleted : 0,
+};
+       con.query("update infra_group set groupName = ? , groupDesc= ? where id = ?", [req.body.groupname,req.body.groupdesc,req.body.gid], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+        if(req.body.gid){
+            var sql_select ="select gcp.compnay_id, GROUP_CONCAT(gcp.project_id) as project_id from infra_group ig inner join group_company_project gcp on (ig.id=gcp.group_id and ig.is_deleted=0 and gcp.is_deleted=0) where ig.id="+req.body.gid+" group by gcp.compnay_id";
+            con.query(sql_select,0, function(err, result){
+                var company_array = [];
+                var intersect_array = [];
+                if(result.length > 0){
+                    for (var i = 0, l = result.length; i < l; i++){
+                      company_array[i]=result[i].compnay_id;
+                    }
+                }
+                intersect_array =req.body.companyIds;
+                intersect_array= intersect(intersect_array,company_array);
+                for( var i =req.body.companyIds.length - 1; i>=0; i--){
+                    for( var j=0; j<company_array.length; j++){
+                      if(req.body.companyIds[i] === company_array[j]){
+                        req.body.companyIds.splice(i, 1);
+                      }
+                    }
+                  }
+            var update_sql = "update group_company_project set is_deleted=1 where group_id="+req.body.gid;
+            con.query(update_sql,'0', function(err, result){
+            });
+            var sql = "insert into group_company_project (group_id,compnay_id,project_id) values ";
+            for(var i=0;i<req.body.companyIds.length;i++){
+                    for(var j=0;j<req.body.compnayProjects[req.body.companyIds[i]].length;j++){
+                      sql += "('"+req.body.gid+ "','" + req.body.companyIds[i] + "','" + req.body.compnayProjects[req.body.companyIds[i]][j] + "'),";
+                    }
+            }
+            sql = sql.substr(0,sql.length-1);
+            con.query(sql,'0', function(err, result){
+           });
+           
+           for(var i=0;i<intersect_array.length;i++){
+                for(var j=0;j<req.body.compnayProjects[intersect_array[i]].length;j++){
+                    if(req.body.compnayProjects[intersect_array[i]][j] != null){
+                       var sql = "select id from group_company_project where group_id = "+req.body.gid+" and compnay_id = "+intersect_array[i]+" and project_id = "+req.body.compnayProjects[intersect_array[i]][j];
+                       con.query(sql,'0', function(err, result){
+                       if(result.length > 0){
+                            var update_record = "update group_company_project set is_deleted =0 where id = "+result[0].id;
+                            con.query(update_record,'0', function(err, result){
+                            });    
+                        }else{
+                            var sql = "insert into group_company_project (group_id,compnay_id,project_id) values ";
+                            sql += "('"+req.body.gid+ "','" + intersect_array[i] + "','" + req.body.compnayProjects[intersect_array[i]][j] + "')";
+                            con.query(sql,'0', function(err, result){
+                           });
+                        }
+                       });
+                    }
+                }
+           }
+           
+           });
+        }
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+	});
+app.post("/deleteGroup", function(req, res){
+if(con == null)
+con = db.openCon(con);
+        con.query("update infra_group set is_deleted = ? where id = ?", [1,req.body.groupId], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+});
+
+app.get("/checkServerLogin", function(req, res){
+	var code = req.query.c;
+	if(con == null)
+	con = db.openCon(con);
+	con.query("select * from server_login_code where code = ? and is_deleted=0", [code], function(err, result) {
+		if (err) console.log("check_email.error: ", err.stack);
+		if (result.length > 0) {
+			res.json({found: 1,result : result[0]});
+//                        con.query("update server_login_code set is_deleted = ? where code = ? ", [1,code], function(err, result){
+//                        if(err){
+//                                res.json({success : 0, err_desc : err});
+//                                return;
+//                        }
+//                        });
+		} else {
+			res.json({found : 0});
+		}
+	});
+});
+
+app.post("/addLoginCode", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = {
+code : req.body.code,
+user_id:req.session.uid,
+is_deleted : 0,
+};
+console.log(req.body.code);
+console.log(req.session.uid);
+        con.query("insert into server_login_code set ?", [data], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+});
+app.post("/getUserGroups", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query('select group_id from user_groups where user_id='+req.body.userid+ " and is_deleted=0 order by group_id", function(error, results){
+        if ( error ){
+            res.status(400).send(error.stack);
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+app.post("/getEachServerPageDetails", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query("SELECT * FROM servers WHERE id = ? ", [req.body.id], function(err, result){
+        if ( err ){
+            res.status(400).send(err.stack);
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+app.post("/getLoginUserDetails", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query("SELECT * FROM users WHERE id = ? ", [req.session.uid], function(err, result){
+        if ( err ){
+            res.status(400).send(err.stack);
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
+app.post("/createSecurityGroup", function(req, res) {   
+if(con == null)
+  con = db.openCon(con);
+  con.query("select cs.*,s.region from customers cs inner join servers s on(cs.id=s.customerIAMId) where s.id = ?", [req.body.serverId], function(err, result){
+        //console.log(result[0].customer_name);
+      //  console.log(result[0].external_id);
+      //  console.log(result[0].arn);   
+// Load the AWS SDK for Node.js
+var AWS = require('aws-sdk');
+//Assuming Role for Different Accounts
+var sts = new AWS.STS({apiVersion: '2011-06-15'});
+var params = {
+  DurationSeconds: 3600,
+  ExternalId: result[0].external_id,
+  RoleArn: result[0].arn,
+  RoleSessionName: "InfraGuard"
+ };
+ sts.assumeRole(params, function(err, data) {
+   if (err){ 
+       if(err.code="CredentialsError"){
+           res.json({success : 0, err_desc : "IAM role in not configured for this server", creator: req.session.uid});
+       }
+     //    console.log(err, err.stack);
+     } // an error occurred
+   else {
+AWS.config.update({
+        accessKeyId : data.Credentials.AccessKeyId,
+        secretAccessKey : data.Credentials.SecretAccessKey,
+        sessionToken : data.Credentials.SessionToken,
+        region : result[0].region
+});
+
+// Create EC2 service object
+var ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
+var vpc = null;
+var gr =[];
+var des = "Infraguard username by " +req.session.email+" created on "+(new Date()).toLocaleDateString();
+// Retrieve the ID of a VPC
+ec2.describeVpcs(function(err, data) {
+   if (err) {
+      console.log("Cannot retrieve a VPC", err);   
+   } else {
+      vpc = data.Vpcs[0].VpcId;   
+   }
+});
+
+// Create JSON object parameters for creating the security group
+var paramsSecurityGroup = {
+   Description: des,
+   GroupName: 'InfraguardSg_'+req.body.serverId,
+   VpcId: vpc
+};
+
+// Create the security group
+ec2.createSecurityGroup(paramsSecurityGroup, function(err, data) {
+   if (err) {
+if(err.code=="InvalidGroup.Duplicate"){
+		   con.query("select securityGroupId from server_security_groups  where userId = ? and serverId = ? and is_deleted=0", [req.session.uid,req.body.serverId], function(err, result){
+		   var params = {
+					Attribute: "groupSet", 
+					InstanceId: req.body.instanceId
+		   };
+		  ec2.describeInstanceAttribute(params, function(err, data) {
+				if(err){ console.log(err, err.stack);} // an error occurred
+				else{  console.log(data);
+					var checkGroup = [];
+                      for(i = 0; i < data['Groups'].length; i++) {
+                        checkGroup.push(data['Groups'][i].GroupId);
+                      }
+					  if(checkGroup.includes(result[0].securityGroupId)){
+						  
+					  }else{
+						  checkGroup.push(result[0].securityGroupId);
+						  console.log("securtiy group is not  available"+result[0].securityGroupId);
+						  var params2 = {
+                            Groups: checkGroup,
+                            InstanceId: req.body.instanceId
+							};
+						ec2.modifyInstanceAttribute(params2, function(err, data) {
+							if (err) console.log(err, err.stack); // an error occurred
+							else     console.log(data);           // successful response
+                      });
+					  }
+					  res.json({success : 1, err_desc : null, creator: req.session.uid});
+				}
+		  });			   
+      
+	  });		   
+	}
+      //console.log("Error Creating Security Group", err);
+   } else {
+      var SecurityGroupId = data.GroupId;
+      console.log("Security Group Created", SecurityGroupId);
+      var paramsIngress = {
+        GroupName: 'infraguard_'+req.body.serverId,
+        IpPermissions:[
+           { IpProtocol: "tcp",
+             FromPort: 5256,
+             ToPort: 5256,
+             IpRanges: [{"CidrIp":"0.0.0.0/0"}]},
+          { IpProtocol: "tcp",
+             FromPort: 22,
+             ToPort: 22,
+             IpRanges: [{"CidrIp":"0.0.0.0/0"}]}
+        ]
+      };
+      ec2.authorizeSecurityGroupIngress(paramsIngress, function(err, data) {
+        if (err) {
+          console.log("Error", err);
+        } else {
+          console.log("Ingress Successfully Set", data);
+          var params = {
+                Attribute: "groupSet", 
+                InstanceId: req.body.instanceId
+               };
+               ec2.describeInstanceAttribute(params, function(err, data) {
+                 if (err){ console.log(err, err.stack);} // an error occurred
+                 else   {  console.log(data);
+                       gr = data['Groups'];
+                      var i;
+                      var grouptoadd = [];
+                      for(i = 0; i < gr.length; i++) {
+                        grouptoadd.push(gr[i].GroupId);
+                      }
+                      grouptoadd.push(SecurityGroupId);
+                      console.log(grouptoadd);
+                      var params2 = {
+                            Groups: grouptoadd,
+                            InstanceId: req.body.instanceId
+                        };
+                      ec2.modifyInstanceAttribute(params2, function(err, data) {
+                        if (err) console.log(err, err.stack); // an error occurred
+                        else     console.log(data);           // successful response
+                      });
+                      
+                 }         // successful response
+          });
+        var Security = {
+            userId : req.session.uid,
+            serverId : req.body.serverId,
+            securityGroupId :SecurityGroupId
+            };
+            con.query("insert into server_security_groups set ?", [Security], function(err, result){
+            if(err){
+                    res.json({success : 0, err_desc : err});
+                    return;
+            }
+            res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+            });
+        }
+     });
+   }
+});        
+};           // successful response
+ });
+});
+  });
+
+app.get("/deleteSecurityGroupB", function(req, res){
+    if(con == null)
+    con = db.openCon(con);
+    con.query("SELECT * FROM server_security_groups WHERE id = ? ", [req.query.id], function(err, result){
+        if ( err ){
+            res.status(400).send(err.stack);
+        } else {
+            // Load the AWS SDK for Node.js
+            var AWS = require('aws-sdk');
+            // Set the region 
+            var PropertiesReader = require('properties-reader');
+            var properties = PropertiesReader('/infraguard/infraguard/config/aws.txt');
+            AWS.config.update({
+                    accessKeyId :properties.get('access_key_id'),
+                    secretAccessKey : properties.get('secret_key'),
+                    region : 'ap-southeast-1'
+            })
+            AWS.config.update({region: 'ap-southeast-1'});
+            // Create EC2 service object
+            var ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
+            var params = {
+               GroupId: result[0].securityGroupId
+            };
+            // Delete the security group
+            ec2.deleteSecurityGroup(params, function(err, data) {
+               if (err) {
+                  console.log("Error", err);
+               } else {
+                  console.log("Security Group Deleted");
+                  con.query("update server_security_groups set is_deleted=1 WHERE id =?", [req.query.id], function(err, result){
+                  if(err){
+                            res.json({success : 0, err_desc : err});
+                            return;
+                  }
+                  res.json({success : 1, creator: req.session.uid});
+                  });
+               }
+            });
+        }
+    });
+});
+
+app.post("/deleteSecurityGroup", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query("SELECT * FROM server_security_groups WHERE userId = ? and serverId = ? and is_deleted=0", [req.session.uid,req.body.serverId], function(err, result){
+        if ( err ){
+            res.status(400).send(err.stack);
+        } else {
+            //res.status(200).send(result);
+            
+                        // Load the AWS SDK for Node.js
+            var AWS = require('aws-sdk');
+            // Set the region 
+            var PropertiesReader = require('properties-reader');
+            var properties = PropertiesReader('/infraguard/infraguard/config/aws.txt');
+            AWS.config.update({
+                    accessKeyId :properties.get('access_key_id'),
+                    secretAccessKey : properties.get('secret_key'),
+                    region : 'ap-southeast-1'
+            })
+            AWS.config.update({region: 'ap-southeast-1'});
+            // Create EC2 service object
+            var ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
+            var params = {
+               GroupId: result[0].securityGroupId
+            };
+            // Delete the security group
+            ec2.deleteSecurityGroup(params, function(err, data) {
+               if (err) {
+                  console.log("Error", err);
+               } else {
+                  console.log("Security Group Deleted");
+                  con.query("update server_security_groups set is_deleted=1 WHERE userId = ? and serverId = ?  and securityGroupId =?", [req.session.uid,req.body.serverId,result[0].securityGroupId], function(err, result){
+                  if(err){
+                            res.json({success : 0, err_desc : err});
+                            return;
+                  }
+                  res.json({success : 1, creator: req.session.uid});
+                  });
+               }
+            });
+        }
+    });
+});
+
+app.post("/createCustomer", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = {
+customer_name : req.body.custName,
+arn:req.body.custARN,
+external_id : req.body.custExternalID
+};
+    con.query("select * from customers where customer_name = ?  and is_deleted = 0", [req.body.custName], function(err, result){
+	if(err){
+		res.json({success : 2, err_desc : err});
+		return;
+	}
+	else if(result.length > 0){
+		res.json({success : 2, err_desc : "Customer name Already Exists!"});
+		return;
+	}
+        else{
+
+        con.query("insert into customers set ?", [data], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+    }
+});
+});
+app.post("/editCustomer", function(req, res){
+if(con == null)
+con = db.openCon(con);
+var data = {
+customer_name : req.body.custName,
+arn:req.body.custARN,
+external_id : req.body.custExternalID
+};
+        con.query("update customers set customer_name = ? ,arn = ? , external_id = ?   where id = ?", [req.body.custName,req.body.custARN,req.body.custExternalID,req.body.custId], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+
+});
+
+app.post("/deleteCustomer", function(req, res){
+if(con == null)
+con = db.openCon(con);
+        con.query("update customers set is_deleted = ? where id = ?", [1,req.body.custId], function(err, result){
+	if(err){
+		res.json({success : 0, err_desc : err});
+		return;
+	}
+	res.json({success : 1, err_desc : null, row_id: result.insertId, creator: req.session.uid});
+	});
+});
+
+app.post("/getCustomers", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query('select * from customers where is_deleted = 0', function(error, results){
+        if ( error ){
+            res.status(400).send(error.stack);
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+
+app.post("/assignCustomer", function(req, res) {
+if(con == null)
+    con = db.openCon(con);
+    con.query('update servers set customerIAMId = ? where id = ?',[req.body.custId,req.body.serverId], function(error, results){
+        if ( error ){
+            res.status(400).send(error.stack);
+        } else {
+            res.json({success : 1, err_desc : null, row_id: results.insertId, creator: req.session.uid});
+        }
+    });
+});
+
+app.post("/sshlog", function(req, res) {
+    console.log(req.body.ssh_command)
+    if(con == null)
+    con = db.openCon(con);
+    var record = null;
+    var record = {
+	serverIp: req.body.serverIp,
+	activityName: "rawCommand",
+	requiredData: JSON.stringify({
+		rawCommand: req.body.ssh_command
+	}),
+	status: "0"
+};
+    con.query("insert into agentActivities set ?", [record], function(err, result){
+		if(err)console.log(err.stack);
+                var sleep = require('system-sleep');
+                sleep(5*1000); // sleep for 5 seconds
+                if(result.insertId){
+                    con.query('select * from agentActivities where id = ?',[result.insertId], function(error, results){
+                    if ( error ){
+                        res.status(400).send(error.stack);
+                    } else {
+                         res.json({success : 1, response : results[0].response, row_id: results.insertId, creator: req.session.uid});
+                    }
+                   });
+                }
+    });
+    
+});
+
+
+app.get("/commandexecutedbyagent", function(req, res){
+	var id = parseInt(req.query.id);
+        var status = parseInt(req.query.status);
+        var commandOutput = req.query.commandOutput;
+	if(con == null)
+	con = db.openCon(con);
+            con.query("update agentActivities set status = ?,response = ? where id = ? ",[1,commandOutput,id], function(err, result) {
+                        if(err){
+                                res.json({success : 0, err_desc : err});
+                                return;
+                        }
+                        res.json({success : 1, err_desc : "success"});
+           });
+        
+});
+
+}
+function intersect(a, b) {
+    var t;
+    if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+    return a.filter(function (e) {
+        return b.indexOf(e) > -1;
+    });
+}
+function updateServerKey(dataset){
+if(con == null)
+con = db.openCon(con);
+var data = [];
+console.log(" Length = : "+dataset.length);
+	for(var i=0;i<dataset.length;i++){
+		var pair = keypair();
+		var pubKey = forge.pki.publicKeyFromPem(pair.public);
+		var sshpubKey = forge.ssh.publicKeyToOpenSSH(pubKey, 'default@InfraGuard');
+		var privateKey = pair.private; 
+		var serverIp = dataset[i].serverIP;
+		var email = dataset[i].email;
+		var record = [];
+		record = [
+		    serverIp,
+		    "updateServerDefaultUserKey",
+		    JSON.stringify({publicKey: sshpubKey,privKey:privateKey,email:email}),
+		    "0"
+			];	
+		data.push(record);
+	}
+
+console.log(" final data length = : "+data.length+"   data = " +data);
+	con.query("insert into agentActivities (serverIp,activityName,requiredData,status) values ?", [data], function(err, result){
+		if(err)console.log(err.stack);
+			console.log(" updateServerKey data inserted into agent activities");
+	}
+	);
+
+console.log('running task = updateServerKey every minute. This will get executed on 1st of every month');
+}
+
+function revokeServerAccess(){
+	var data = [];
+	if(con == null)
+	con = db.openCon(con);
+    con.query("select * from userServerAccessStatus where accessStatus = ?", [1], function(err, result) {
+    if (err) console.log("signup_error: ", err.stack); 
+	if (result.length > 0) {
+		for(var i=0;i<result.length;i++){
+		record = [
+		    result[i].serverIP,
+		    "deletePubKey",
+		    JSON.stringify({userName: result[i].userName}),
+		    "0"
+		];	
+		data.push(record);
+	}
+	con.query("insert into agentActivities (serverIp,activityName,requiredData,status) values ?", [data], function(err1, result1){
+		if(err1){
+			console.log(err1.stack);
+		}
+	});
+	}
+ });
+ console.log('running task = revokeServerAccess every day. This will get executed every day');
+}
+
+function saveQRCodeImg(qrcode,email){
+	var base64Data = qrcode.replace(/^data:image\/png;base64,/, "");
+    require("fs").writeFile("./angular/images/qrcode/"+email+".png", base64Data, 'base64', function(err) {
+	 	console.log(err);
+	});
+}
+
+function signupAction(req, res, data){
+	if(con == null)
+	con = db.openCon(con);
+	con.query("select email from users where email = ?", [data.email], function(err, result) {
+		if (err) console.log("signup_error: ", err.stack); 
+		if (result.length > 0) {
+			res.json({success : 0});
+		} else {
+
+			
+			var pubKey = forge.pki.publicKeyFromPem(pair.public);
+			var sshpubKey = forge.ssh.publicKeyToOpenSSH(pubKey, data.uname+'@InfraGuard');
+            data.publicKey = sshpubKey;
+            data.privateKey = pair.private;
+            data.shell = "/bin/bash";
+            data.linuxName = data.uname;
+            con.query("insert into users set ? ", data, function(err, result){
+				if(err)console.log(err.stack);
+				res.json({success : 1,key : pair.private });
+			});
+
+			//mailPrivateKey(pair.private);
+		}
+		
+	});
+}
+
+function loginAction(req, res, data){
+	if(con == null)
+	con = db.openCon(con);
+	con.query("SELECT * FROM users WHERE email = ? ", data.email, function(err, result){
+		if(err)console.log("select error: ", err.stack);
+		if (result.length > 0) {
+			var passwValid = bcryptPassw.compareHash(data.passw, result[0].passw);
+			if(passwValid){
+				if(result[0].mfaEnabled == 0){
+				req.session.email=result[0].email;
+				req.session.uid = result[0].id;
+                                req.session.groupId = result[0].groupId;
+			    }
+				var data1 = {success: 1 , uname : result[0].uname, email : result[0].email, mfa : result[0].mfaEnabled};
+				res.status(200).json(data1);
+			} else {
+				res.status(200).json({success : 0, error : "email/password not valid"});
+			}
+
+		} else {
+			res.status(200).json({success : 0, error : "email/password not valid"});
+		}
+		//con.destroy();
+	});
+}
+
+function getUserData(req, res){
+	if(con == null)
+	con = db.openCon(con);
+	var obj = {};
+        var group_id_string = "";
+	obj.userdata = null;
+	obj.companydata = null;
+	obj.projectdata = null;
+	Promise.all([
+	
+		new Promise((resolve, reject) => {
+			con.query("SELECT * FROM users WHERE (email = ? )", [req.session.email], function(err, result){
+				if(err)console.log(err.stack);
+				if (result.length > 0) {
+					resolve(result[0]);
+				}
+			  resolve(null);
+			});
+		}),
+		
+		new Promise((resolve, reject) => {
+                    var sql_group = "select group_id from user_groups where is_deleted=0 and user_id="+req.session.uid;
+                    console.log(sql_group);
+                    con.query(sql_group,'0', function(err, result){
+                        if(result.length>0){
+                           for (var i = 0, l = result.length; i < l; i++)
+                                  group_id_string += result[i].group_id + ",";
+                                  group_id_string = group_id_string.substr(0,group_id_string.length-1);
+                           }                                  
+                    var sql ="select cd.* from companydetails cd where cd.is_deleted=0 and cd.companyCreator= "+req.session.uid+" union select cd.* from companydetails cd inner join group_company_project gcp on (cd.id=gcp.compnay_id and cd.is_deleted=0 and gcp.is_deleted=0 ) where gcp.group_id in ("+group_id_string+") group by cd.id";
+//			con.query("SELECT * FROM companydetails WHERE companyCreator = ? and is_deleted=0 ", [req.session.uid], function(err, result){
+                        con.query(sql,'0', function(err, result){
+				if(err)console.log(err.stack);
+				if(result.length > 0){
+					resolve(result);
+				}
+				resolve(null);
+			});
+                        });
+		}),
+
+		new Promise((resolve, reject) => {
+                        var sql = "SELECT * FROM companydetails c INNER JOIN projectdetails p ON c.id = p.company_id WHERE c.companyCreator = "+req.session.uid+" and is_deleted=0 union select c.*,p.* from companydetails c Inner Join projectdetails p  inner join group_company_project gcp on (c.id=p.company_id and  c.id=gcp.compnay_id and p.id =gcp.project_id and c.is_deleted=0 and gcp.is_deleted=0)";
+			//con.query("SELECT * FROM companydetails c INNER JOIN projectdetails p ON c.id = p.company_id WHERE c.companyCreator = ? and is_deleted=0 ", [req.session.uid], function(err, result){
+                        con.query(sql,'0', function(err, result){
+				if(err)console.log(err.stack);
+				if(result.length > 0){
+					resolve(result);
+				}
+				resolve(null);
+			});
+		})
+		
+	]).then(function(results){
+		obj.userdata = results[0];
+		obj.companydata = results[1];
+		obj.projectdata = results[2];
+		res.status(200).json(obj);
+	});
+	
+}
+
+function getGroupData(req, res){
+	if(con == null)
+	con = db.openCon(con);
+	var obj = {};
+	obj.userdata = null;
+	obj.companydata = null;
+	obj.projectdata = null;
+	Promise.all([
+		new Promise((resolve, reject) => {
+			con.query("SELECT * FROM companydetails WHERE  is_deleted=0 ", '0', function(err, result){
+				if(err)console.log(err.stack);
+				if(result.length > 0){
+					resolve(result);
+				}
+				resolve(null);
+			});
+		}),
+
+		new Promise((resolve, reject) => {
+			con.query("SELECT * FROM companydetails c INNER JOIN projectdetails p ON c.id = p.company_id WHERE  is_deleted=0 ", '0', function(err, result){
+				if(err)console.log(err.stack);
+				if(result.length > 0){
+					resolve(result);
+				}
+				resolve(null);
+			});
+		})
+		
+	]).then(function(results){
+		obj.companydata = results[0];
+		obj.projectdata = results[1];
+		res.status(200).json(obj);
+	});
+	
+}
+
+

@@ -1,0 +1,53 @@
+<!-- Register Section -->
+<div class="logoHeader">
+    <div class="logodiv">
+        <a href="#/">
+                    <img alt="" src="images/logo.png" />
+                    </a>
+    </div>
+</div>
+        <section class="loginsection">
+            <div class="content-wrapper">
+                <div class="loginBox">
+                    <div class="loginLogo">Register</div>
+                    <div class="clear">&nbsp;</div>
+                    <form name="signupForm" novalidate>
+                    <input id="Text1" name="txtUsername" ng-model="txtUsername" type="text" placeholder="Username" required="" />
+                    <input id="Text3" name="txtEmail" ng-blur="email_blur()" ng-model="txtEmail" type="email" placeholder="Admin Email" required="" />
+                    <input id="Text2" passw-validation name="txtPassw" ng-minlength="8" ng-maxlength="32" ng-blur="passw_blur()" ng-model="txtPassw" type="password" placeholder="Password" required="" />
+                    <input id="Password1" passw-validation name="btnSubmit" ng-model="btnSubmit" type="submit" value="SignUp" ng-click="register()"/>
+                    </form>
+
+
+                    <div class="forgotText"><a href="#login">I already have a login.</a></div>
+                    <p>By continuing, you accept our <a href="javascript:void(0)">terms of service.</a></p>
+                    
+                    <div>
+                    <p class="colorRed" ng-show="registerFailed">{{ registerMsg }}</p>
+                    </div>
+
+                    <div>
+                    <p class="colorRed" ng-show="!registerFailed && !signupForm.txtUsername.$valid && (signupForm.txtUsername.$dirty || signupForm.txtUsername.$touched)">Username is required.</p>
+                    </div>
+                    
+                    <div>
+                    <p class="colorRed" ng-show="!registerFailed && signupForm.txtEmail.$error.required && (signupForm.txtEmail.$dirty || signupForm.txtEmail.$touched)">Email is required.</p>
+                    <p class="colorRed" ng-show="!registerFailed && signupForm.txtEmail.$error.email && (signupForm.txtEmail.$dirty || signupForm.txtEmail.$touched)">Email is invalid.</p>
+                    </div>
+
+                    <div>
+                    <p class="colorRed" ng-show="!registerFailed && signupForm.txtPassw.$error.required && (signupForm.txtPassw.$dirty || signupForm.txtPassw.$touched)">Password is required.</p>
+                    <p class="colorRed" ng-show="!registerFailed && (signupForm.txtPassw.$error.minlength || signupForm.txtPassw.$error.maxlength)">Password must be between 8-32 characters.</p>
+                    <p class="colorRed" ng-show="!registerFailed && signupForm.txtPassw.$error.specialValidate">Password should contain atleast one special character.</p>
+                    <p class="colorRed" ng-show="!registerFailed && signupForm.txtPassw.$error.upperValidate">Password should contain atleast one Uppercase letter.</p>
+                    </div>
+
+                    <div class="clear"></div>
+
+                    
+                </div>
+
+            </div>
+            
+        </section>
+<!-- Register Section End

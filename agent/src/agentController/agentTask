@@ -1,0 +1,46 @@
+* User Management
+  
+  1. Add User
+  2. Delete User
+  3. Change Privilege
+  4. Lock Down Server 
+  5. UserList  : show 10 users if present and option to show more X
+
+* Processes
+
+  1. Show top 10 processess with option to view more
+
+* Environment Variables
+
+  1. List environment variables : 10 with options to show more
+  2. Add new environment variable
+
+* Cron Jobs
+
+  1. List running cron jobs
+  2. Schedule new job  
+  3. Run script
+
+* Applications
+ 
+  1. List installed applications
+  2. Install new software 
+
+
+Extra Done:-
+A] unlock server
+B] Agent Uninstallation 
+
+
+-------------------- 15 -20 days --------------------
+Env SET/GET
+how top 10 processess with option to view more
+List running cron jobs
+List installed applications
+
+
+
+Requires R & D
+Install new software -----------> No idea
+Cron Related Jobs ---------------> No Idea
+utility to check expired A/c or expired PWD

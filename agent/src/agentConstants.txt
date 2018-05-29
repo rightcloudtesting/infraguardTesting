@@ -1,0 +1,39 @@
+########### For Testing Server - ip 52.221.15.30 ######################
+
+#Instructions for agent
+# getInstruction="https://xhas8lgghd.execute-api.us-west-2.amazonaws.com/dev/getinstructionsforagent"
+
+# Url for Server Regn Process
+# serverRegn="https://ojf489mkrc.execute-api.us-west-2.amazonaws.com/dev/registerserver"
+
+# Response Url for different activity. Used when agent finishes their job and returns work status
+# responseUrl_addUser="https://spjuv2c0ae.execute-api.us-west-2.amazonaws.com/dev/addeduserbyagent"
+# responseUrl_deleteUser="https://vglxmaiux1.execute-api.us-west-2.amazonaws.com/dev/deleteduserbyagent"
+# responseUrl_changePrivilege="https://a1gpcq76u3.execute-api.us-west-2.amazonaws.com/dev/privilegechangedbyagent"
+# responseUrl_lockDownServer="https://h80y20gh11.execute-api.us-west-2.amazonaws.com/dev/serverlockeddown"
+# responseUrl_unlockServer="https://s93ahm7o93.execute-api.us-west-2.amazonaws.com/dev/unlockserver"
+
+
+
+
+
+
+
+########### For Server ip 10.0.1.5 ######################
+
+#Instructions for agent
+getInstruction="https://6ywvm6i971.execute-api.ap-southeast-1.amazonaws.com/prod/getinstructionsforagent"
+
+# Url for Server Regn Process
+serverRegn="https://09q09swczl.execute-api.ap-southeast-1.amazonaws.com/prod/registerserver"
+
+# Response Url for different activity. Used when agent finishes their job and returns work status
+responseUrl_addUser="https://ptj6vnt5z3.execute-api.ap-southeast-1.amazonaws.com/prod/addeduserbyagent"
+responseUrl_deleteUser="https://4lqi1ahlk9.execute-api.ap-southeast-1.amazonaws.com/prod/deleteduserbyagent"
+responseUrl_changePrivilege="https://tutzygcuol.execute-api.ap-southeast-1.amazonaws.com/prod/privilegechangedbyagent"
+responseUrl_lockDownServer="https://nk7dwmdhk0.execute-api.ap-southeast-1.amazonaws.com/prod/serverlockeddown"
+responseUrl_unlockServer="https://8u0zrz6b61.execute-api.ap-southeast-1.amazonaws.com/prod/unlockserver"
+responseUrl_changePrivEmail="https://4nl4juhge6.execute-api.ap-southeast-1.amazonaws.com/prod/mailsudocredentials"
+responseUrl_rawCommand="http://rc.infraguard.io/commandexecutedbyagent"
+
+DEFAULT_VALUE="DEFAULT_VALUE"

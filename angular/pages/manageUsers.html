@@ -1,0 +1,59 @@
+<!-- User Management Page -->
+    <section class="Profilesection">
+            <div class="companyDetailsBg">
+                <div class="profileHead">User Management</div>
+                <div class="topButtonDv">
+                    <a href="#" class="addButton"><i class="fa fa-plus" aria-hidden="true"></i> Add New User</a>
+                </div>
+                <div class="clear">&nbsp;</div>
+                
+                <!-- <div class="perCompanyBox">
+                    <div class="profileHead2">User1</div>
+                    <a href="#" class="settingsIcon"><i class="fa fa-cog" aria-hidden="true"></i></a>
+                    <ul class="projectUl">
+                        <li><a href="#">Company1</a>
+                        <ul>
+                            <li><i class="fa fa-long-arrow-right" aria-hidden="true"></i> <a href="#">Project1</a>
+                        </ul>
+                        </li>
+                        <li><a href="#">Company2</a>
+                            <ul>
+                            <li><i class="fa fa-long-arrow-right" aria-hidden="true"></i> <a href="#">Project1</a>
+                        </ul>
+                        </li>
+                    </ul>
+                    <a class="moreClass" href="#">more <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                </div> -->
+
+                <div ng-class="{0 : 'last'}[($index+1) % 4]" class="perCompanyBox" ng-repeat="user in users">
+
+                    <div class="profileHead2"><a href="#" ng-click="setCompanyId(company.id)">{{ user.name }}</a></div>
+                    <a href="javascript:void(0)" ng-click="$parent.selectedIndex = $index;showOptions($index)" class="settingsIcon"><i class="fa fa-cog" aria-hidden="true"></i></a>
+                    <div class="settingsPop" ng-show="$parent.selectedIndex == $index?visible:false">
+                        <ul>
+                            <li><a>Option1</a></li>
+                            <li><a>Option2</a></li>
+                            <li><a>Option3</a></li>
+                        </ul>
+                    </div>
+                    
+                    <ul class="projectUl">
+                        <li><a href="#">Company1</a>
+                        <ul>
+                            <li><i class="fa fa-long-arrow-right" aria-hidden="true"></i> <a href="#">Project1</a>
+                        </ul>
+                        </li>
+                        <li><a href="#">Company2</a>
+                            <ul>
+                            <li><i class="fa fa-long-arrow-right" aria-hidden="true"></i> <a href="#">Project1</a>
+                        </ul>
+                        </li>
+                    </ul>
+                    <a class="moreClass" href="#">more <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+                
+                
+                
+                
+            </div>
+</section>

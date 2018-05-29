@@ -1,0 +1,43 @@
+<section class="Profilesection">
+    <div class="left" style="width: 10%;float: left;">
+        <ul>
+            <a href="#/"><li class="h1 add" style="margin-top:-20px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Home</li></a>
+            <!--<a href="#/companyCron"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:#2670B7; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:white; text-align:center; line-height:50px; font-weight:600; ">Cron</li></a>-->
+            <a href="#/automation"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Automation</li></a>
+        </ul>
+    </div>
+            <div ng-if='companyCron.length==0' class="profileHead text-center">There is no cron available for this company.</div>
+            <div class="companyDetailsBg addCompanyDetail" ng-if='companyCron.length>0'>
+                <div class="profileHead">Cron job List of Company {{companyCron[0].companyName}}
+                    <a href="#/projectCron"><button style="margin-left:23%" type="button" class="btn btn-lg btn-primary btn-sm">Project View</button></a>
+                    <a href="#/cron"><button type="button" class="btn btn-lg btn-primary btn-sm" style="color:yellow;">Cron View</button></a>
+                </div>
+                <div class="topButtonDv">
+                    <!-- code to hide add new company for the user that have no access to add company indexOf(1) that 1 is hard coded -->
+                   <a href="javascript:void(0)" ng-click="showjobModal()" class="addButton"><i class="fa fa-plus" aria-hidden="true"></i>Create job</a>
+                </div>
+          <!-- code to hide add new company for the user that have no access to add company indexOf(1) that 1 is hard coded -->    
+        
+                <div class="clear">&nbsp;</div>
+                
+
+            <div ng-class="{0 : 'last'}[($index+1) % 4]" class="perCompanyBox" ng-repeat="job in companyCron">
+                <div class="profileHead2"><a href="#/cronDetails" ng-click="setCompanyId(job.id)">{{ job.job_name }}</a></div>
+                 <a href="javascript:void(0)" ng-click="$parent.selectedIndex = $index;showOptions($index)" class="settingsIcon"><i class="fa fa-cog" aria-hidden="true"></i></a>
+               <div class="settingsPop" ng-show="$parent.selectedIndex == $index?visible:false">
+                    <ul>
+                        <!-- code to hide edit company for the user that have no access to edit company indexOf(2) that 2 is hard coded -->
+                        <li><a href="javascript:void(0)" ng-click="showjobEditModal(job.id,job.job_name,job.job_command,job.minute,job.hour,job.day_of_month,job.month,job.day_of_week,job.server_job_name)">Edit job</a></li>
+                        <!-- code to hide delete company for the user that have no access to delete company indexOf(3) that 3 is hard coded -->
+                        <li><a href="javascript:void(0)" ng-click="DeletejobModal(job.id,$index)">Delete job</a></li>
+                    </ul>
+                </div> 
+                <ul class="projectUl">
+                     <li>Frequency</li>
+                     <li>{{ job.minute }}&nbsp;&nbsp;{{ job.hour }}&nbsp;&nbsp;{{ job.day_of_month }}&nbsp;&nbsp;{{ job.month }}&nbsp;&nbsp;{{ job.day_of_week }}  </li>
+                </ul>
+                 <a class="moreClass" ng-click="setCronId(job.id)"  href="#/cronDetails">more details <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
+                
+            </div>
+</section>

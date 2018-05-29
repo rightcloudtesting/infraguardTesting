@@ -1,0 +1,58 @@
+<section>
+    <div class="profileRight">
+                    <div class="profileHead">Profile</div>
+                    <div class="clear">&nbsp;</div>
+                    <div class="profileForm">
+                    <input type="hidden" value="{{userId}}" id="userId" /> 
+                    <div class="colorGreen" ng-show="infoSuccess">Profile Information is Updated Successfully.</div>
+                        <div class="editSaveDv">
+                            <a href="javascript:void(0)" class="editBtn" ng-show="edit" ng-click="editUser()">Edit</a>
+                            <a href="javascript:void(0)" class="divSaveBtn" ng-hide="edit" ng-click="saveUser()">Save</a>
+                            
+                            <label>Name</label>
+                        <input id="Text1" type="text" placeholder="Enter name" ng-disabled="true" ng-model="name"/>
+                        <div class="clear">&nbsp;</div>
+                        <label>Email</label>
+                        <input id="Text2" type="text" placeholder="Enter email" ng-disabled="true" ng-model="email"/>
+                        <div class="clear">&nbsp;</div>
+                        <!--<label>Linux Username</label>
+                        <input id="Text3" type="text" placeholder="Enter username" ng-disabled="edit" ng-model="linuxName"/>
+                        <div class="clear">&nbsp;</div>
+                        <label>Preferred Shell</label>
+                        <select ng-disabled="edit" ng-model="shell">
+                            <optgroup label="Recomended Shell">
+                                <option value="/bin/bash">/bin/bash</option>
+                                <option value="/bin/sh">/bin/sh</option>
+                            </optgroup>
+                            <optgroup label="Automation and Backup Accounts">
+                                <option value="/sbin/nologin">/sbin/nologin</option>
+                                <option value="/bin/false">/bin/false</option>
+                            </optgroup>
+                        </select>
+                        </div>-->
+                        <div class="clear">&nbsp;</div>
+                        <label class="sshTextClass">SSH Public Key</label>
+                        <a href class="helpText" ng-click="showHelpModal()">NEED HELP</a>
+                        <textarea id="TextArea1" cols="20" rows="2" ng-model="ssh_key" placeholder="Enter SSH Public Key">
+                            {{ssh_key}}
+                        </textarea>
+                        <div class="clear"></div>
+                        <p>More than one? Just paste them in with a blank line between!</p>
+                        <p ng-show="keySuccess" class="colorGreen">SSH Public Key is Updated Successfully.</p>
+                        <p ng-show="ssh_err_display" class="colorRed">{{ssh_err_msg}}</p>
+                        
+                        <input id="Password1" type="button" value="Change Password" ng-click="changePassword(uId, password)" />
+                        <!-- <input id="Button1" type="button" value="Setup MFA" ng-click="#/mfa"/> -->
+                        <a href="#/mfa" class="setupMFABtn"><i class="fa fa-plus" aria-hidden="true"></i> Setup MFA</a>
+                        <input id="Button2" type="button" ng-click="saveKey()" value="Save" class="saveBtn" />
+                        
+                        <div class="clear">&nbsp;</div>
+                        <label>UPDATE PHOTO  <span>MAX 32 MB JPEG</span></label>
+                        <label class="cabinet">
+                            <input type="file" class="file" file-model="user_image" value="Choose File"/>
+                            <input id="Button3" type="button" ng-click="upload()" value="Upload" class="saveBtn" />
+                        </label>
+                        <div ng-show="uploadSuccess" class="colorGreen">Profile Image is Uploaded Successfully.</div>
+                    </div>
+                </div>
+</section>

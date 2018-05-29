@@ -1,0 +1,14 @@
+{
+    "appenders": [
+        {
+            "type": "console"
+        }
+    ],
+
+    "levels": {
+        // only ERROR logging will be visible from the main module
+        "net.renalias.log4js.sample": "ERROR",
+        // everything up to INFO will be visible from the somelib module
+        "net.renalias.log4js.sample.somelib": "INFO"
+    }
+}

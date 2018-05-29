@@ -1,0 +1,422 @@
+CREATE TABLE `roles` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`roleName` VARCHAR(50) NULL DEFAULT NULL,
+	`roleDesc` VARCHAR(255) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+CREATE TABLE `policy_element_map` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`policy_id` INT(11) NULL DEFAULT NULL,
+	`policy_element_id` INT(11) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+CREATE TABLE `policy_elements` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`policy_element_name` VARCHAR(50) NULL DEFAULT NULL,
+	`policy_element_categroy` VARCHAR(50) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+CREATE TABLE `policy` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`policyName` VARCHAR(255) NULL DEFAULT NULL,
+	`policyDesc` VARCHAR(255) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+ALTER TABLE `companydetails`
+	ADD COLUMN `is_deleted` INT(11) NULL DEFAULT '0' AFTER `companyCreator`;
+ALTER TABLE `roles`
+	ADD COLUMN `policyId` INT(11) NULL DEFAULT NULL AFTER `is_deleted`;
+
+ALTER TABLE `users`
+	ADD COLUMN `roleId` INT NULL DEFAULT NULL AFTER `mfaSecret`,
+	ADD COLUMN `is_deleted` INT NULL DEFAULT '0' AFTER `roleId`;
+
+
+
+ALTER TABLE `users`
+	ADD COLUMN `groupId` INT NULL DEFAULT NULL AFTER `is_deleted`;
+CREATE TABLE `group_company_project` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`group_id` INT(11) NULL DEFAULT NULL,
+	`compnay_id` INT(11) NULL DEFAULT NULL,
+	`project_id` INT(11) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+CREATE TABLE `infra_group` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`groupName` VARCHAR(50) NULL DEFAULT NULL,
+	`groupDesc` VARCHAR(50) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+CREATE TABLE `server_login_code` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`code` VARCHAR(50) NULL DEFAULT NULL,
+	`user_id` INT(11) NULL DEFAULT NULL,
+	`is_deleted` TINYINT(4) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+
+
+CREATE TABLE `user_groups` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`user_id` INT(11) NULL DEFAULT NULL,
+	`group_id` INT(11) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+ALTER TABLE `servers`
+	ADD COLUMN `globalHostName` VARCHAR(255) NULL DEFAULT NULL AFTER `autoKeyRotation`;
+	
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (1, 'Create Company', 'Company', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (2, 'Edit Company', 'Company', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (3, 'Delete Company', 'Company', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (4, 'Create Project', 'Project', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (5, 'Edit Project', 'Project', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (6, 'Add Server', 'Server', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (7, 'Add Server user', 'Server', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (8, 'Edit Server user', 'Server', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (9, 'Change Privilege', 'Server', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (10, 'LockDown Server', 'Server', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (11, 'Update Server Key', 'Project', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (12, 'Start Auto Key Rotation', 'Project', 0);
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (13, 'Stop Auto Key Rotation', 'Project', 0);
+CREATE TABLE `server_security_groups` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`userId` INT(11) NULL DEFAULT NULL,
+	`serverId` INT(11) NULL DEFAULT NULL,
+	`securityGroupId` VARCHAR(50) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+ALTER TABLE `companydetails`
+	ADD COLUMN `customerId` INT(11) NULL DEFAULT NULL AFTER `companyCreator`;
+CREATE TABLE `customers` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`customer_name` VARCHAR(255) NULL DEFAULT NULL,
+	`arn` VARCHAR(255) NULL DEFAULT NULL,
+	`external_id` BIGINT(20) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+ALTER TABLE `servers`
+	ADD COLUMN `instanceId` VARCHAR(255) NULL DEFAULT NULL AFTER `serverName`;
+
+ALTER TABLE `servers`
+	ADD COLUMN `customerIAMId` INT NULL DEFAULT NULL AFTER `globalHostName`;
+
+
+ALTER TABLE `customers`
+	ADD COLUMN `is_deleted` INT NULL DEFAULT '0' AFTER `external_id`;
+ALTER TABLE `servers`
+	ADD COLUMN `region` VARCHAR(255) NULL DEFAULT NULL AFTER `customerIAMId`,
+	ADD COLUMN `vpc_id` VARCHAR(255) NULL DEFAULT NULL AFTER `region`;
+
+ALTER TABLE `agentactivities`
+	ADD COLUMN `response` VARCHAR(255) NULL AFTER `status`;
+ALTER TABLE `servers`
+ ADD COLUMN `agentVersion` INT NULL DEFAULT '1' AFTER `vpc_id`;
+ALTER TABLE `agentactivities`
+ CHANGE COLUMN `response` `response` VARCHAR(4500) NULL DEFAULT NULL AFTER `status`;
+ALTER TABLE `customers`
+	CHANGE COLUMN `external_id` `external_id` VARCHAR(255) NULL DEFAULT NULL AFTER `arn`;
+ALTER TABLE `users`
+	ADD COLUMN `lastlogin` BIGINT NULL DEFAULT NULL AFTER `groupId`;
+CREATE TABLE `cron_job` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`job_name` VARCHAR(255) NULL DEFAULT NULL,
+	`job_command` VARCHAR(2000) NULL DEFAULT NULL,
+	`minute` VARCHAR(255) NULL DEFAULT NULL,
+	`hour` VARCHAR(255) NULL DEFAULT NULL,
+	`day_of_month` VARCHAR(255) NULL DEFAULT NULL,
+	`month` VARCHAR(255) NULL DEFAULT NULL,
+	`day_of_week` VARCHAR(255) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+CREATE TABLE `cronjob_server_mapping` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`cronjob_id` INT(11) NULL DEFAULT NULL,
+	`server_id` INT(11) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+ALTER TABLE `cron_job`
+	ADD COLUMN `server_job_name` VARCHAR(255) NULL DEFAULT NULL AFTER `day_of_week`;
+CREATE TABLE `automation_scripts` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`script_name` VARCHAR(255) NULL DEFAULT NULL,
+	`script_desc` VARCHAR(255) NULL DEFAULT NULL,
+	`script` VARCHAR(5000) NULL DEFAULT NULL,
+	`created_on` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`modified_on` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`is_deleted` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+CREATE TABLE `script_server_mapping` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`user_id` INT(11) NULL DEFAULT NULL,
+	`script_id` INT(11) NULL DEFAULT NULL,
+	`server_id` INT(11) NULL DEFAULT NULL,
+	`agentactivity_id` INT(11) NULL DEFAULT NULL,
+	`script_run_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+ALTER TABLE `servers`
+	CHANGE COLUMN `autoKeyRotation` `autoKeyRotation` INT(1) NOT NULL DEFAULT '0' AFTER `lockedDown`;
+ALTER TABLE `server_login_code`
+	ADD COLUMN `expire_time` BIGINT NULL DEFAULT NULL AFTER `user_id`;
+CREATE TABLE `script_ssm_history` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`script_id` INT(11) NULL DEFAULT NULL,
+	`server_id` INT(11) NULL DEFAULT NULL,
+	`user_id` INT(11) NULL DEFAULT NULL,
+	`command_id` VARCHAR(255) NULL DEFAULT NULL,
+	`command_output` VARCHAR(20000) NULL DEFAULT NULL,
+	`script_run_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+CREATE TABLE `ssm_alive_history` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`server_id` INT(11) NULL DEFAULT NULL,
+	`server_ip` VARCHAR(255) NULL DEFAULT NULL,
+	`command_id` VARCHAR(255) NULL DEFAULT NULL,
+	`last_run_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`status` VARCHAR(50) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+ALTER TABLE `servers`
+	ADD COLUMN `raw_data` LONGTEXT NULL DEFAULT NULL AFTER `agentVersion`;
+
+ALTER TABLE `customers`
+	CHANGE COLUMN `external_id` `external_id` VARCHAR(50) NULL DEFAULT NULL AFTER `arn`;
+
+ALTER TABLE `servers`
+	ADD COLUMN `home_directory` VARCHAR(50) NULL DEFAULT NULL AFTER `raw_data`;
+
+
+ALTER TABLE `servers`
+	ADD COLUMN `platform` VARCHAR(55) NULL DEFAULT NULL AFTER `home_directory`;
+ALTER TABLE `servers`
+	ADD COLUMN `cpu_per` VARCHAR(55) NULL DEFAULT NULL AFTER `platform`,
+	ADD COLUMN `memory_per` VARCHAR(55) NULL DEFAULT NULL AFTER `cpu_per`,
+	ADD COLUMN `disk_per` VARCHAR(55) NULL DEFAULT NULL AFTER `memory_per`,
+	ADD COLUMN `os_version` VARCHAR(55) NULL DEFAULT NULL AFTER `disk_per`;
+
+CREATE TABLE `automation_mapping` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`script_id` INT(11) NULL DEFAULT NULL,
+	`project_id` INT(11) NULL DEFAULT NULL,
+	`server_id` INT(11) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+ALTER TABLE `script_ssm_history`
+	ADD COLUMN `command` VARCHAR(2000) NULL DEFAULT NULL AFTER `user_id`;
+ALTER TABLE `servers`
+	ADD COLUMN `tag_id` INT NULL DEFAULT NULL AFTER `os_version`;
+
+CREATE TABLE `grouping_tags` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`tag_name` VARCHAR(255) NULL DEFAULT NULL,
+	`is_deleted` SMALLINT(6) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+INSERT INTO `grouping_tags` (`id`, `tag_name`, `is_deleted`) VALUES (1, 'App Server', 0);
+INSERT INTO `grouping_tags` (`id`, `tag_name`, `is_deleted`) VALUES (2, 'RDS', 0);
+ALTER TABLE `servers`
+	ADD COLUMN `instance_flag` INT(11) NULL DEFAULT '0' AFTER `tag_id`;
+
+ALTER TABLE `customers`
+	ADD COLUMN `user_id` INT NULL DEFAULT NULL AFTER `external_id`;
+
+CREATE TABLE `server_users` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`server_id` INT(11) NULL DEFAULT NULL,
+	`server_ip` VARCHAR(50) NULL DEFAULT NULL,
+	`username` VARCHAR(50) NULL DEFAULT NULL,
+	`private_key` VARCHAR(5000) NULL DEFAULT NULL,
+	`is_deleted` VARCHAR(5000) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM
+;
+
+ALTER TABLE `grouping_tags`
+	ADD COLUMN `tag_desc` VARCHAR(255) NULL DEFAULT NULL AFTER `tag_name`,
+	ADD COLUMN `tag_creator` INT NULL DEFAULT NULL AFTER `tag_desc`;
+
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (22, 'Unlock Server', 'Server', 0);
+ALTER TABLE `server_users`
+	ADD COLUMN `email` VARCHAR(50) NULL DEFAULT NULL AFTER `username`;
+CREATE TABLE `region` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`region_name` VARCHAR(50) NULL DEFAULT NULL,
+	`region` VARCHAR(50) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (1, 'US East (Ohio)', 'us-east-2', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (2, 'US East (N. Virginia)', 'us-east-1', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (3, 'US West (N. California)', 'us-west-1', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (4, 'US West (Oregon)', 'us-west-2', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (5, 'Asia Pacific (Tokyo)', 'ap-northeast-1', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (6, 'Asia Pacific (Seoul)', 'ap-northeast-2', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (7, 'Asia Pacific (Osaka-Local)', 'ap-northeast-3', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (8, 'Asia Pacific (Mumbai)', 'ap-south-1', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (9, 'Asia Pacific (Singapore)', 'ap-southeast-1', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (10, 'Asia Pacific (Sydney)', 'ap-southeast-2', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (11, 'Canada (Central)', 'ca-central-1', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (12, 'China (Beijing)', 'cn-north-1', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (13, 'China (Ningxia)', 'ncn-northwest-1', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (14, 'EU (Frankfurt)', 'eu-central-1', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (15, 'EU (Ireland)', 'eu-west-1', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (16, 'EU (London)', 'eu-west-2', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (17, 'EU (Paris)', 'eu-west-3', 0);
+INSERT INTO `region` (`id`, `region_name`, `region`, `is_deleted`) VALUES (18, 'South America (Sao Paulo)', 'sa-east-1', 0);
+
+
+
+ALTER TABLE `ssm_alive_history`
+	ADD COLUMN `raw_data` VARCHAR(5000) NULL DEFAULT NULL AFTER `status`;
+CREATE TABLE `commands` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`commandName` VARCHAR(50) NULL DEFAULT NULL,
+	`commandDesc` VARCHAR(255) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+INSERT INTO `policy_elements` (`id`, `policy_element_name`, `policy_element_categroy`, `is_deleted`) VALUES (24, 'Cloud Trail', 'Server', 0);
+CREATE TABLE `scheduled_task` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`project_id` INT(11) NULL DEFAULT NULL,
+	`task` VARCHAR(255) NULL DEFAULT NULL,
+	`day` VARCHAR(255) NULL DEFAULT NULL,
+	`time` VARCHAR(255) NULL DEFAULT NULL,
+	`task_creator` MEDIUMINT(9) NULL DEFAULT NULL,
+	`is_deleted` SMALLINT(6) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+ALTER TABLE `servers`
+	ADD COLUMN `buffer` VARCHAR(50) NULL DEFAULT NULL AFTER `instance_flag`,
+	ADD COLUMN `cache` VARCHAR(50) NULL DEFAULT NULL AFTER `buffer`;
+
+
+ALTER TABLE `script_ssm_history`
+	ADD COLUMN `project_id` INT NULL DEFAULT NULL AFTER `script_run_time`;
+
+CREATE TABLE `script_scheduler` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`script_id` INT(11) NULL DEFAULT NULL,
+	`project_id` INT(11) NULL DEFAULT NULL,
+	`automationDate` DATE NULL DEFAULT NULL,
+	`automationTime` TIME NULL DEFAULT NULL,
+	`is_executed` INT(11) NULL DEFAULT '0',
+	`is_deleted` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB;
+ALTER TABLE `script_ssm_history`
+	ADD COLUMN `excecuted_from` VARCHAR(50) NULL DEFAULT NULL AFTER `project_id`;
+ALTER TABLE `customers`
+	ADD COLUMN `service_arn` VARCHAR(255) NULL DEFAULT NULL AFTER `arn`;
+CREATE TABLE `automation_parameter` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`script_id` INT(11) NULL DEFAULT NULL,
+	`name` VARCHAR(50) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB;
+CREATE TABLE `patching_log` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`server_id` INT(11) NULL DEFAULT NULL,
+	`window_id` VARCHAR(255) NULL DEFAULT NULL,
+	`patch_name` VARCHAR(255) NULL DEFAULT NULL,
+	`task_id` VARCHAR(255) NULL DEFAULT NULL,
+	`target_id` VARCHAR(255) NULL DEFAULT NULL,
+	`cron` VARCHAR(255) NULL DEFAULT NULL,
+	`duration` VARCHAR(255) NULL DEFAULT NULL,
+	`cutoff` VARCHAR(255) NULL DEFAULT NULL,
+	`operation_type` VARCHAR(255) NULL DEFAULT NULL,
+	`is_deleted` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=MyISAM;
+
+ALTER TABLE `projectdetails`
+	ADD COLUMN `is_deleted` INT(11) NOT NULL DEFAULT '0' AFTER `company_id`;
+
+ALTER TABLE `cronjob_server_mapping`
+	CHANGE COLUMN `from_project` `project_id` INT NULL DEFAULT NULL AFTER `server_id`;
+
+ALTER TABLE `script_ssm_history`
+	ADD COLUMN `server_users_id` INT(11) NULL DEFAULT NULL AFTER `project_id`;

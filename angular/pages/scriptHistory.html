@@ -1,0 +1,35 @@
+<section class="Profilesection">
+    <div class="left" style="width: 10%;float: left;">
+        <ul>
+            <a href="#/"><li class="h1 add" style="margin-top:-20px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Home</li></a>
+            <!--<a href="#/projectCron"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Cron</li></a>-->
+            <a href="#/automation"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:#2670B7; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:white; text-align:center; line-height:50px; font-weight:600; ">Automation</li></a>
+        </ul>
+    </div>
+            <div class="companyDetailsBg addCompanyDetail">
+                <div class="profileHead" ng-if="scriptHistory.length >0"><a href="#/automation" style="float:left;margin-top: -3px;"><button type="button" class="btn btn-primary btn-xs"><< Back</button></a>&nbsp;&nbsp;History of {{scriptHistory[0].script_name}}</div>
+                <div class="profileHead" ng-if="!scriptHistory.length >0" style="text-align: center"><a href="#/automation" style="float:left;margin-top: -3px;"><button type="button" class="btn btn-primary btn-xs"><< Back</button></a>No History is available for this script.</div>
+                <table ng-if="scriptHistory.length >0" class="table" style="margin-top: 25px;">
+                    <tr>
+                        <th>S.no</th>
+                        <th>Run by</th>
+                        <th>Server Name</th>
+                        <th>Server IP</th>
+                        <th>Script run time</th>
+                        <th></th> 
+                    </tr>
+                    <tr ng-repeat="row in scriptHistory">
+                            <td>#{{$index + 1}}</td>
+                            <th>{{ row.email }}</th>
+                            <td>{{ row.serverName }}</td>
+                            <td>{{ row.serverIp }}</td>
+                            <td>{{ row.script_run_time |date:'yyyy-MM-dd hh:mm' }}</td>
+                            <td><a href="#/scriptHistoryDetails" ng-click="setHistoryId(row.history_id)"><button type="button" class="btn btn-primary btn-xs">History Details</button></a></td>
+                   </tr>
+                </table>
+            </div> 
+</section>
+<style>
+    table tr td{text-align: center;}table tr th{text-align: center;font-weight: bold;}
+    .btn-xs,.btn-xs:hover{background-color: #17a0a2;border-color: #17a0a2;}
+</style>

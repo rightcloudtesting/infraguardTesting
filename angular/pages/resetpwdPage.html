@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Reset Password</title>
+    <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+     <link rel="stylesheet" type="text/css" href="css/site.css" />
+
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    
+</head>
+<body>
+<section ng-app="resetpwd" ng-controller="resetpwdController">
+
+	  <h3> Reset Your Password </h3>
+      <div class="clear">&nbsp;</div>
+	  <label >New Password : </label>
+	  <input type="password" name="newpwd" ng-model="newpwd" ng-blur="checkPassValidity('newpwd')" maxlength="32">
+	  <p class="colorRed">{{ newpwdMsg }}</p>
+	  <div class="clear">&nbsp;</div>
+	  <label >Confirm Password : </label>
+	  <input type="password" name="cnfpwd" ng-model="cnfpwd" maxlength="32">
+	  <div class="clear">&nbsp;</div>
+	  <input type="button" value="Reset Password" ng-click="resetPassword()" class="blueButton"/>
+	  <p class="colorRed">{{ finalpwdMsg }}</p>
+	  <div ng-show="pwdResetSuccess">
+	  	<h4>Password reset done.</h4><a href={{loginUrl}}>Go to login page.</a>
+	  </div>
+      
+</section>
+
+       <script src="controllers/resetpwdController.js"></script>
+       
+</body>
+</html>

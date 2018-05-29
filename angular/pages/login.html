@@ -1,0 +1,43 @@
+    <div class="logoHeader">
+    <div class="logodiv">
+        <a href="#/">
+                    <img alt="" src="images/logo.png" />
+                    </a>
+    </div>
+    </div>
+
+        <!-- Login Section -->
+        <section class="loginsection">
+            <div class="content-wrapper">
+                <div class="loginBox">
+                    <div class="loginLogo">Login</div>
+                    <div class="clear">&nbsp;</div>
+
+                 <form name="loginForm" novalidate>
+                    <input id="Text1" type="text" ng-blur="uname_blur()" placeholder="Email Id" name="txtEmail" ng-model="txtEmail" required />
+                    <input id="Text2" type="password" ng-blur="passw_blur()" placeholder="Password" name="txtPassw" ng-model="txtPassw" required />
+                    <input id="Password1" type="submit" value="Login" name="btnSubmit" ng-click='login()'/>
+                 </form>
+                    <div class="forgotText" ng-click="showResetPopup('pwd')"><a href="javascript:void(0)">Forgot Password</a></div>
+                    <div class="signUpText"><a href="#signup">Sign Up</a></div>
+                    <p>Never log in on a machine that doesn't belong to you.</p>
+
+                    <div>
+                    <p class="colorRed" ng-show="loginFailed">{{ loginMsg }}</p>
+                    </div>
+
+                    <div>
+                    <p class="colorRed" ng-show="!loginFailed && !loginForm.txtEmail.$valid && (loginForm.txtEmail.$dirty || loginForm.txtEmail.$touched)">Email Id is required.</p>
+                    </div>
+                    
+                    <div>
+                    <p class="colorRed" ng-show="!loginFailed && !loginForm.txtPassw.$valid && (loginForm.txtPassw.$dirty || loginForm.txtPassw.$touched)">Password is required.</p>
+                    </div>
+                   
+                    <div class="clear"></div>
+                </div>
+                
+            </div>
+            
+        </section>
+<!-- Login Section End -->

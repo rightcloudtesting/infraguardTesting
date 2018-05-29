@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="utf-8" />
+    <title>InfraGuard{{title}}</title>
+    <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+    <!-- Font awesome css -->
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+
+    <!-- Custom css -->
+    <link rel="stylesheet" type="text/css" href="css/site.css" />
+
+</head>
+<body>
+    <section class="headersection">
+        <div class="content-wrapper">
+            <header class="header">
+                <div class="headerLogodiv">
+                    <a href="#/">
+                    <img alt="" src="images/logo.png" />
+                    </a>
+                </div>
+                <div class="menuDiv">
+                    <ul class="topLinkUl">
+                        <li><a href="javascript:void(0)" class="menuButton">Features</a></li>
+                        <li><a href="javascript:void(0)" class="menuButton">Docs</a></li>
+                        <li><a href="javascript:void(0)" class="menuButton">Enterprise</a></li>
+                        <li><a href="#login" class="menuButton logoutmenu">Login <i class="fa fa-sign-in" aria-hidden="true"></i></a></li>
+                        <li><a href="#signup" class="menuButton">Signup</a></li>
+                    </ul>
+                </div>
+            </header>
+        </div>
+
+    </section>
+    <div class="clear"></div>
+    <div class="ng-view">
+    <!-- Body Section -->
+    <!-- Body Section End -->
+    </div>
+    <div class="clear"></div>
+    <div ng-class="modal_class"></div>
+
+       <!-- MFA Validation Popup --> 
+       <div class="modal fade authenticationBox" ng-class="{true : 'fade1'}[visible_mfa]">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" ng-click="close('mfakey_cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title">2FA Authentication</h2>
+              </div>
+              <form>
+              <div class="padding10">
+                   <p>
+                        Please enter Authentication Key:
+                    </p>
+                    <input type="text" ng-model="mfakey" name="mfakey" placeholder="Please Enter Key" />
+                    <!-- <p class="colorRed" ng-show="errName">Please Enter Key</p> -->
+                    
+                    <a class="forgotMfa" href="javascript:void(0)" ng-click="showResetPopup('mfa')">Recover Key</a>
+                    <div class="colorRed">{{ mfa_err_msg }}</div>
+                </div>
+              <div class="modal-footer">
+              
+                <button type="button" ng-click="close('mfakey_cancel')" class="btn btn-default modalButton cancelBtn" data-dismiss="modal">Cancel</button>
+                <input type="submit" ng-click="close('mfakey_ok')" value="OK" class="btn btn-primary modalButton okBtn" />
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+         <!-- MFA reset popup -->
+        <div class="modal fade resetBox" ng-class="{true: 'fade1'}[mfaReset]">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" ng-click="close('mfaResetCancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title">Do you want to reset your MFA keys? You will receive an Email.</h3>
+              </div>
+              <p class="colorRed">{{ mfa_err_msg }}</p>
+              <div class="modal-footer">
+                <button type="button" ng-click="close('mfaResetCancel')" class="btn btn-default modalButton cancelBtn" data-dismiss="modal">Cancel</button>
+                <input type="submit" ng-click="close('mfaResetOk')" value="OK" class="btn btn-primary modalButton okBtn" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- password reset popup -->
+        <div class="modal fade authenticationBox" ng-class="{true : 'fade1'}[pwdReset]">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" ng-click="close('pwdResetCancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title">Do you want to recover your password?</h2>
+              </div>
+              <form>
+              <div class="padding10">
+                   <p>
+                        Please enter your Email :
+                    </p>
+                    <input type="text" ng-model="email" name="email" placeholder="Please Enter Email" />
+                    <div class="colorRed">{{ pwdMsg }}</div>
+                </div>
+              <div class="modal-footer">
+              
+                <button type="button" ng-click="close('pwdResetCancel')" class="btn btn-default modalButton cancelBtn" data-dismiss="modal">Cancel</button>
+                <input type="submit" ng-click="close('pwdResetOk')" ng-model="email"value="OK" class="btn btn-primary modalButton okBtn" />
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        
+    <section class="footerSection">
+        <div class="copyrightText">InfraGuard 1.1.1-0 Copyright &copy; Company Corporation</div>
+    </section>
+
+    <script type="text/javascript" src="js/jquery-1.10.0.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular-route.min.js"></script>
+
+    <script type="text/javascript" src="config/config.js"></script>
+    <script type="text/javascript" src="controllers/loginController.js"></script>
+    <script type="text/javascript" src="controllers/signupController.js"></script>
+    <script type="text/javascript" src="controllers/homeController.js"></script>
+    <script type="text/javascript" src="directives/passwValidation.js"></script>
+        
+ </body>
+</html>

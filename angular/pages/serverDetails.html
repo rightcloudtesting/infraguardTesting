@@ -1,0 +1,267 @@
+<link rel="stylesheet" href="css/style12.css">
+<section class="Profilesection">
+            <div class="left" style="width: 10%;float: left;">
+                <ul>
+                    <a href="#/"><li class="h1 add" style="margin-top:-20px;cursor: pointer;width:100%; height:50px;background:#2670B7; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:white; text-align:center; line-height:50px; font-weight:600; ">Home</li></a>
+                 <!--   <a href="#/projectCron"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Cron</li></a>-->
+                    <a href="#/automation"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Automation</li></a>
+                </ul>
+            </div>
+            <div style="margin-bottom: 8px;font-size: 16px;float: left;margin-left: 15px;"><a href="#/" style="color:#2670B7;"><i class="fa fa-home" aria-hidden="true"></i></a>/<a href="#/project" ng-click="setCompanyId(project.company_id)" style="color:#2670B7;font-size: 13px;">{{project.companyName}}</a>/<a style="font-size: 13px;">{{project.projectName}}</a></div>
+            <div class="companyDetailsBg" style="padding-top: 0px;">
+                <div style="border:2px solid #ddd;padding:10px;margin-bottom: 25px;">
+                <div class="profileHead" style="font-size: 1.8em">Server Details For Project : {{project.projectName}}</div>
+                <!--<div class="topButtonDv" style="margin-top: -15px;">
+                    <!-- code to hide add new server for the user that have no access to add server indexOf(6) that 6 is hard coded -->  
+                   <!-- <a ng-if="userElements.indexOf(6) != -1" href="javascript:void(0)" ng-click="showServerModal()" class="addButton"><i class="fa fa-plus" aria-hidden="true"></i> Add Server</a>
+                    <!-- <a href="#/users" class="manageButton"><i class="fa fa-user" aria-hidden="true"></i> User Management</a> -->
+                <!--</div>-->
+                <div class="clearfix"></div>
+                <div style="float:left;margin-left: 2px;margin-bottom: 15px;">
+                    Total Number of Servers  - <span>{{servers.length}}</span>
+                </div>
+                <div class="clearfix"></div>
+                <div style="float:left;margin-left: 2px;">
+                    Running Servers with SSM  - <span>{{liveServers}}</span>
+                </div>
+                <div class="clearfix"></div>
+                </div>
+
+            <div class="clear">&nbsp;</div>
+                            <div>
+                    <input id="tab1" type="radio" name="tabs" checked>
+                    <label style="margin-left:15px;" for="tab1">Server Details</label>
+
+                  <input id="tab2" type="radio" name="tabs" ng-click="clickAutomation()">
+                    <label for="tab2">Automation</label>
+
+                <!--    <input id="tab3" type="radio" name="tabs">
+                    <label for="tab3">Cron</label>
+                    
+                  <!--  <input id="tab4" type="radio" name="tabs">
+                    <label for="tab4">Trail</label>-->
+
+                   <!-- <input id="tab4" type="radio" name="tabs">
+                    <label for="tab4">dd</label>-->
+                   <input id="tab5" type="radio" name="tabs" ng-click="clickUserLogs()">
+                   <label for="tab5">User Logs</label>
+                    <section  class="section" id="content1">
+                        <div style="text-align: center;margin-top: 30px;font-size: 24px;" ng-if="servers.length <= 0">No Server is available for this Project.</div>
+                        <div>
+                             <table class="table" ng-if="servers.length >0" style="border:2px solid #ddd;">
+                                <tr>
+                                    <th width="30px">#</th>
+                                    <th>Server Name</th>
+                                    <!--<th>Tag</th>-->
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+             <tr ng-repeat-start="row in Tags">
+                <td ng-if="row !=null" colspan="2" style="font-weight: bold;">&nbsp;&nbsp;{{row}}</td>
+                <td ng-if="row ==null" colspan="2" style="font-weight: bold;">&nbsp;&nbsp;Untagged</td>
+            </tr>
+             <tr ng-repeat-end ng-repeat="server in tagArray[row]"  class='hiderow {{company.id}}'>
+                 <td></td>
+                 <td>
+                     <a ng-click="setServerId(server.id,server.ssm_status)" style='cursor:pointer;'>
+                         <span ng-if="server.ssm_status=='Alive' || server.ssm_status=='Online'"><img style="width:15px;margin-top:-6px;" src="images/green-circle.png"/></span>
+                         <span ng-if="server.ssm_status=='Stop' || server.ssm_status=='ConnectionLost' || server.ssm_status=='Inactive'|| server.ssm_status=='Error'"><img style="width:15px;margin-top:-6px;" src="images/grey_circle.png"/></span>
+                         {{ server.serverName }}
+                         <a href="javascript:void(0)" ng-click='checkSSMAgentStatus(server.id,server.serverIP,server.customerIAMId)'><img class="checkSSMStatus_{{server.id}}" src="images/refresh_icon.png" style="width: 20px;"></a>
+                     </a>
+                 </td>
+                <!-- <td>
+                     <select class="form-control" style="height:31px;width:120px;margin-bottom: 0px;" ng-model="GroupingTags" ng-change="setTag(GroupingTags,server.id)">
+                         <option value = "" label = "Select Tag"></option>
+                         <option ng-repeat="tag in groupingTags" value="{{ tag.id }}"
+                                 ng-selected="{{ tag.id == server.tag_id }}">
+                             {{tag.tag_name}}
+                         </option>
+                     </select>
+                 </td>-->
+                 <td>
+                     <span  ng-repeat="user in serverUsers[server.id]" ng-if="userElements.indexOf(21) != -1 && server.platform !='Windows'">
+                         <span class="padding1" style="border-radius: 10px; background-color: #abef98; font-weight: bold"> 
+                             {{user.username}}
+                             <div class="dropdown">
+                                 <a class="dropbtn" href="javascript:void(0)" ng-click="$parent.selectedIndex = $index;showOptions($index)"><img src="images/setting.png"></a>
+                                 <div class="dropdown-content" style=" font-weight: normal; min-width: 120px; text-align: left">
+                                     <a href="javascript:void(0)" ng-click="deleteServerUser(user.username, user.id, server.id, $index)">Delete user</a>
+                                     <a href="javascript:void(0)" ng-click="showRotateKeyModal(server.id, user.id, user.username, user.email)">Rotate Key</a>
+                                     <a href="javascript:void(0)" ng-click="downloadPrivateKeyModal(server.id, user.id, user.username, user.private_key)" ng-href="{{ fileUrl }}" download="file.pem"  ng-if="user.private_key !=null">Download Key</a>
+                                     <a href="javascript:void(0)" ng-click="viewUserLogs(user.id)">View Logs</a>
+                                 </div>
+                             </div>
+                         </span>
+                         &nbsp;&nbsp;<span ng-show="$last" ng-if="value[server.id] == 1"><a href="#/serverDetails" ng-click="getUserDetails(server.id)"><button type="button" class="padding2" style="border-radius: 10px; background-color: #abef98; font-weight: bold;">More...</button></a></span>
+                     </span>
+                 </td>
+                 <td>
+                     <div class="dropdown" style="margin-left: -90px">
+                         <a class="dropbtn" href="javascript:void(0)" ng-click="$parent.selectedIndex = $index;showOptions($index)"><img src="images/setting.png"></a>
+                         <div class="dropdown-content">
+                             <a href="javascript:void(0)" ng-click="assignTag(server.id,groupingTags,server.tag_id)">Assign Tag</a>
+                             <!--<a ng-if = "server[$index].users.indexOf(name.toLowerCase()) != -1 && userElements.indexOf(23) != -1" href="javascript:void(0)" ng-click="showUserModal('getAccessKey', server.id)">Get Access Key</a>-->
+                             <a ng-if="userElements.indexOf(7) != -1  && server.platform !='Windows'" href="javascript:void(0)" ng-click="showUserModal('adduser', server.id)">Add User</a>
+                             <!--<a ng-if="userElements.indexOf(8) != -1 && server.platform !='Windows'" href="javascript:void(0)" ng-click="showUserModal('deleteuser', server.id)">Delete User</a>-->
+                              <!--<a ng-if="userElements.indexOf(9) != -1" href="javascript:void(0)" ng-click="showUserModal('changeprivilege', server.serverIP)">Change Privilege</a>-->
+                             <a ng-if = "server.lockedDown==0 && userElements.indexOf(10) != -1" href="javascript:void(0)" ng-click="showUserModal('serverLockdown', server.id)">LockDown Server</a>
+                             <a ng-if = "server.lockedDown==1 && userElements.indexOf(22) != -1" href="javascript:void(0)" ng-click="showUserModal('serverUnlock', server.id)">Unlock Server</a>
+                             <a href="javascript:void(0)" ng-click="loginToServer(server.globalHostName,server.id,project.company_id,server.instanceId,server.customerIAMId,server.agentVersion,server.region,server.globalHostName,server.vpc_id)">Login to Server</a>
+                             <!--<a ng-if="roleId ==1" href="javascript:void(0)" ng-click="showUserModal('assigncustomer', server.id,server.serverName,server.customerIAMId)">Assign Customer</a>-->
+                             <!--<a ng-click="setServerId(server.id)" href="#/serverDetails">Check Process</a>-->
+                             <a href="javascript:void(0)" ng-click="serverRotateKey(server.id)">Server Rotate Key</a>
+                         </div>
+                     </div>
+
+                 </td>
+            </tr>
+                            </table> 
+                        </div>
+                    </section>
+                   <section class="section" id="content2">
+                       <div style="float: right;margin-bottom: 20px;"><a href="javascript:void(0)" ng-click="createProjectScriptModel(servers)" ng-if="servers.length>0"><button type="button" class="btn btn-primary">Create Script</button></a></div>
+                       <div class="clearfix"></div>
+                        <div style="text-align: center;margin-top: 30px;font-size: 24px;" ng-if="projectTop10Script==''">No Automation script is available.</div>
+                        <div>
+                            <div style="float:left;width: 50%">   
+                                <table class="table table1"  ng-if="projectTop10Script.length >0" style="border: 2px solid #ddd">
+                                    <thead>
+                                        <tr>
+                                           <th class="col-xs-1 col1">#</th>
+                                           <th class="col-xs-4 col2">Script Name</th>
+                                           <th class="col-xs-4 col3">Script Desc</th>
+                                           <th class="col-xs-3">&nbsp;&nbsp;</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="row in projectTop10Script.slice(0,10)">
+                                                <td class="col-xs-1">{{$index + 1}}</td>
+                                                <td class="col-xs-4">{{ row.script_name }}</td>
+                                                <td class="col-xs-4">{{ row.script_desc }}</td>
+                                                <td class="col-xs-3">
+                                                    <a ng-click='viewScript(row.script)'><button type="button" class="btn btn-primary btn-xs">View</button></a>
+                                                   <!-- <a ng-click='runScript(row.id,row.script_name,row.script,row.script_desc,servers[0].project_id,servers[0].serverIP)'><button type="button" class="btn btn-primary btn-xs">Run</button></a>-->
+                                                    <a ng-click='runScriptForProject(servers,servers[0].project_id,row.id,row.script_name,row.script,row.script_desc)'><button type="button" class="btn btn-primary btn-xs">Run</button></a>
+                                                    <a href="javascript:void(0)" ng-click='deleteScript(row.id, row.script_name, $index)'><img width="20px" src="images/delete_icon.png"/></a>
+                                                    <a href="javascript:void(0)" ng-click="scriptSchedule(row.id, servers[0].project_id)"><img width="20px" src="images/schedule_icon.png"/></a>
+                                                </td>
+                                            </tr>
+                                    </tbody>
+                                   </table>
+                             </div>
+                            <div style="width:48%;float:right;">
+                            <div style="border: 2px solid #ddd;height:270px;overflow-y: auto;padding-left: 20px;" ng-if="projectTop10Script.length >0">
+                                <p style="font-weight: bold;font-size: 20px;text-align: center;color:#666;">Output Window</p>
+                                <p style="white-space: pre;font-family: monospace;font-size:15px;">{{response}}</p>
+                            </div>
+                            <a ng-click="downloadOutput()" ng-href="{{ fileUrl }}" download="output.txt"><button type="button" class="btn btn-primary btn-xs" style="margin-top: 10px; float: right" ng-show="Output">Download Output</button></a>
+                            </div>
+                        </div>
+                    </section>
+                    <section  class="section" id="content3">
+                       <div style="float: right;margin-bottom: 20px;"><a href="javascript:void(0)" ng-click="showjobModal()" ng-if="servers.length>0"><button type="button" class="btn btn-primary">Create Cron</button></a></div>
+                       <div class="clearfix"></div>
+                        <div style="text-align: center;margin-top: 30px;font-size: 24px;" ng-if="CronJobs==''">No cron is available for this Project.</div>
+                           <table ng-if="CronJobs.length >0" class="table table-fixed">
+                               <thead>
+                                   <tr>
+                                        <th class="col-xs-1">S.no</th>
+                                        <th class="col-xs-3">Job Name</th>
+                                        <th class="col-xs-5">Details</th>
+                                        <th class="col-xs-1">&nbsp;&nbsp;</th>
+                                        <th class="col-xs-3">&nbsp;&nbsp;</th>
+                                    </tr>
+                               </thead>
+                               <tbody>
+                                  <tr ng-repeat="job in CronJobs">
+                                    <td class="col-xs-1">#{{$index + 1}}</td>
+                                    <td class="col-xs-3">{{ job.job_name }}</td>
+                                    <td class="col-xs-5">{{ job.minute+" "+job.hour+" "+job.day_of_month+" "+job.month+" "+job.day_of_week+" "+job.job_command }}</td>
+                                    <td><a href="javascript:void(0)" ng-click="editjobModal(job.job_name, job.job_command, job.minute, job.hour, job.day_of_month, job.month, job.day_of_week, $index)" ng-if="servers.length>0"><img width="20px" src="images/edit_icon.png"/></a></td>
+                                    <td class="col-xs-3"><a href="javascript:void(0)" ng-click='deleteCronFromProjectModel(job.id,job.server_job_name,server[0].id,servers[0].serverIP,job.minute+" "+job.hour+" "+job.day_of_month+" "+job.month+" "+job.day_of_week+" root "+job.job_command,$index)'><img width="20px" src="images/delete_icon.png"/></a></td>
+                                  </tr> 
+                               </tbody>
+                            </table>
+                    </section>
+                     <section class="section" id="content4">
+                        <div style="text-align: center;margin-top: 30px;font-size: 24px;" ng-if="projectTrail==''">No project trail is available.</div>
+                           <table ng-if="projectTrail.length >0" class="table">
+                               <thead>
+                                   <tr>
+                                        <th class="col-xs-1">S.no</th>
+                                        <th class="col-xs-3">Script Name</th>
+                                        <th class="col-xs-3">Run by</th>
+                                        <th class="col-xs-3">Run time</th>
+                                        <th class="col-xs-2">&nbsp;&nbsp;</th>
+                                    </tr>
+                               </thead>
+                               <tbody>
+                                  <tr ng-repeat="row in projectTrail">
+                                    <td class="col-xs-1">#{{$index + 1}}</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='0'">Run Command</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-1'">Kill Process</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-2'">Memory Echo1</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-3'">Memory Echo2</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-4'">Memory Echo3</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-10'">LockDown Server</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-9'">unLock Server</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-8'">Add Server User</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-7'">Delete Server User</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-6'">Server Rotate Key</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-5'">Get Access Key</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-11'">Top Processes</td>
+                                    <td class="col-xs-3" ng-if="row.script_id!='0' && row.script_id!='-1' && row.script_id!='-2' && row.script_id!='-3'&& row.script_id!='-4' && row.script_id!='-10' && row.script_id!='-9' && row.script_id!='-8' && row.script_id!='-7' && row.script_id!='-6' && row.script_id!='-5' && row.script_id!='-11'">{{row.script_name}}</td>
+                                    <td class="col-xs-3">{{ row.email }}</td>
+                                    <td class="col-xs-3">{{row.script_run_time |date:'yyyy-MM-dd hh:mm'}}</td>
+                                    <td class="col-xs-3">
+                                        <a ng-if="row.script_id!='0' && row.script_id!='-1' && row.script_id!='-2' && row.script_id!='-3' && row.script_id!='-4'  && row.script_id!='-10'  && row.script_id!='-9' && row.script_id!='-8' && row.script_id!='-7' && row.script_id!='-6' && row.script_id!='-5' && row.script_id!='-11'" ng-click="showOutputModel(row.script,row.command_output)"><button type="button" class="btn btn-primary btn-xs">Command & Output</button></a>
+                                        <a ng-if="row.script_id=='0' || row.script_id=='-1' || row.script_id=='-2' || row.script_id=='-3' || row.script_id=='-4' || row.script_id=='-10' || row.script_id=='-9' || row.script_id=='-8' || row.script_id=='-7' || row.script_id=='-6' || row.script_id=='-5' || row.script_id=='-11'" ng-click="showOutputModel(row.command,row.command_output)"><button type="button" class="btn btn-primary btn-xs">Command & Output</button></a>
+                                    </td>
+                                  </tr> 
+                               </tbody>
+                            </table>
+                    </section>
+                   <section class="section" id="content5">
+                        <div style="text-align: center;margin-top: 30px;font-size: 24px;" ng-if="userTrail==''">No User log is available.</div>
+                           <table ng-if="userTrail.length >0" class="table">
+                               <thead>
+                                   <tr>
+                                        <th class="col-xs-1">S.no</th>
+                                        <th class="col-xs-3">Script Name</th>
+                                        <th class="col-xs-3">Username</th>
+                                        <th class="col-xs-3">Run by</th>
+                                        <th class="col-xs-3">Run time</th>
+                                        <th class="col-xs-2">&nbsp;&nbsp;</th>
+                                    </tr>
+                               </thead>
+                               <tbody>
+                                  <tr ng-repeat="row in userTrail">
+                                    <td class="col-xs-1">#{{$index + 1}}</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-8'">Add Server User</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-7'">Delete Server User</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-6'">Server Rotate Key</td>
+                                    <td class="col-xs-3" ng-if="row.script_id=='-12'">Download Key</td>
+                                    <td class="col-xs-3">{{ row.username }}</td>
+                                    <td class="col-xs-3">{{ row.email }}</td>
+                                    <td class="col-xs-3">{{row.script_run_time |date:'yyyy-MM-dd hh:mm'}}</td>
+                                    <td class="col-xs-3">
+                                        <a ng-click="showOutputModel(row.command,row.command_output)"><button type="button" class="btn btn-primary btn-xs">Command & Output</button></a>
+                                    </td>
+                                  </tr> 
+                               </tbody>
+                            </table>
+                    </section>
+                </div>
+            </div>
+</section>
+<style>
+    table tr td{text-align: left;}table tr th{text-align: left;background:#ddd;}
+    .table1{table-layout: fixed;}
+    .padding1{padding-left: 7px; padding-top: 2px; padding-bottom: 3px}
+    .padding2{padding-left: 5px; padding-right: 5px;padding-top: 1px; padding-bottom: 1px}
+    .col1{width:5%}
+    .col2{width:22%}
+    .col3{width:30%}
+   .btn-xs,.btn-xs:hover{background-color: #17a0a2;border-color: #17a0a2;}
+</style>

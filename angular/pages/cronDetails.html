@@ -1,0 +1,56 @@
+<style>
+table, th  {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+  font-weight:bold;
+  text-align: center;
+}
+table, th , td {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+}
+table tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+.btn-xs,.btn-xs:hover{background-color: #17a0a2;border-color: #17a0a2;}
+</style>
+<section class="Profilesection">
+    <div class="left" style="width: 10%;float: left;">
+        <ul>
+            <a href="#/"><li class="h1 add" style="margin-top:-20px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Home</li></a>
+           <!-- <a href="#/projectCron"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:#2670B7; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:white; text-align:center; line-height:50px; font-weight:600; ">Cron</li></a>-->
+            <a href="#/automation"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Automation</li></a>
+        </ul>
+    </div>
+            <div class="companyDetailsBg addCompanyDetail">
+                <div class="profileHead"><a href="#/cron" style="float:left;margin-top: -3px;"><button type="button" class="btn btn-primary btn-xs"><< Back</button></a>&nbsp;&nbsp;{{cronJob.job_name}}</div>
+                <div class="clear">&nbsp;</div>
+                <div>
+                    <div style="font-weight: bold;font-size: 20px;">Command : {{cronJob.job_command}} </div><br><br>
+                    <div style="font-weight: bold;font-size: 20px;">Frequency : {{ cronJob.minute }}&nbsp;&nbsp;{{ cronJob.hour }}&nbsp;&nbsp;{{ cronJob.day_of_month }}&nbsp;&nbsp;{{ cronJob.month }}&nbsp;&nbsp;{{ cronJob.day_of_week }}</div>
+                </div>
+                 <div class="topButtonDv">
+                    <a href="javascript:void(0)" ng-click="showAllocateServerModel()" class="addButton"><i class="fa fa-plus" aria-hidden="true"></i> Assign Server</a>
+                </div>
+                <table ng-if="cronJobServers.length >0" style="margin-top: 35px;margin-left: auto;margin-right: auto;">
+                        <tr>
+                            <th width="100px">S.NO.</th>
+                            <th width="150px">Company Name</th>
+                            <th width="150px">Project Name</th>
+                            <th width="150px">Server Name</th>
+                        </tr>
+                    <tr ng-repeat="row in cronJobServers">
+                      <td>#{{$index + 1}}</td>
+                      <td>{{ row.companyName }}</td>
+                      <td>{{ row.projectName }}</td>
+                      <td>{{ row.serverName }}</td>
+                    </tr>
+                  </table>
+            </div>
+</section>

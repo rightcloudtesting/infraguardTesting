@@ -1,0 +1,58 @@
+﻿<link rel="stylesheet" href="css/style12.css">
+<section class="Profilesection">
+    <div class="left" style="width: 10%;float: left;">
+        <ul>
+            <a href="#/"><li class="h1 add" style="margin-top:-20px;cursor: pointer;width:100%; height:50px;background:#2670B7; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:white; text-align:center; line-height:50px; font-weight:600; ">Home</li></a>
+           <!-- <a href="#/companyCron"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Cron</li></a>-->
+            <a href="#/automation"><li class="h1 add" style="margin-top:10px;cursor: pointer;width:100%; height:50px;background:lightgray; border-bottom:1px #e5e5e5 solid; border-right:1px #e5e5e5 solid; overflow:hidden; font-size:16px; color:#303031; text-align:center; line-height:50px; font-weight:600; ">Automation</li></a>
+        </ul>
+    </div>
+    <div class="companyDetailsBg" style='padding-top: 0px;'>
+        <div style="margin-bottom: 5px;font-size: 16px;"><a href="#/" style="color:#2670B7;"><i class="fa fa-home" aria-hidden="true"></i></a>/<a style="font-size: 13px;">{{company_name}}</a></div>
+        <div class="profileHead">Project Details for Company : {{company_name}}</div>
+        <div class="topButtonDv">
+            <a ng-if="userElements.indexOf(4) != -1" href="javascript:void(0)" ng-click="showPopup('createProject','')" class="addButton"><i class="fa fa-plus" aria-hidden="true"></i> Add Project</a>
+        </div>
+        <div class="clear">&nbsp;</div>
+        <table class='table'>
+            <tr>
+                <th>Project Name</th>
+                <th>Live Servers</th>
+                <th>Total Servers</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat-start="project in projects">
+                <td><a ng-click="showServers(project.id)"><img class='hideDetails img_{{project.id}}' src='images/plus.png'></a><a href="#/server" ng-click="setProjectId(project.id)">{{ project.projectName }}</a></td>
+                <td>&nbsp;&nbsp;{{project.Liveservers.length}}</td>
+                <td>&nbsp;&nbsp;{{project.servers.length}}</td>
+                <td>
+                    <div class="dropdown">
+                        <a class="dropbtn" href="javascript:void(0)" ng-click="$parent.selectedIndex = $index;showOptions($index)"><img src="images/setting.png"></a>
+                        <div class="dropdown-content" style='min-width:175px;'>
+                            <a ng-if="userElements.indexOf(5) != -1" href="javascript:void(0)" ng-click="showPopup('editProject', project.id,project.projectName, $index)">Edit Project</a>
+                            <a ng-if="userElements.indexOf(25) != -1" href="javascript:void(0)" ng-click="showPopup('deleteProject', project.id,project.projectName, $index)">Delete Project</a>
+                            <a ng-if="project.servers.length > 0 && userElements.indexOf(11) != -1" href="javascript:void(0)" ng-click="showPopup('updateServerKey', project.id)">Update Server Key</a>
+                            <a ng-if = "project.servers[0].autoKeyRotation==0 && userElements.indexOf(12) != -1" href="javascript:void(0)" ng-click="showPopup('startKeyAutoRotation', project.id)">Start Auto Key Rotation</a>
+                            <a ng-if = "project.servers[0].autoKeyRotation==1 && userElements.indexOf(13) != -1" href="javascript:void(0)" ng-click="showPopup('stopKeyAutoRotation', project.id)">Stop Auto Key Rotation</a>
+                            <a href="javascript:void(0)" ng-click="createScheduler(project.id)">Schedule Start/Stop</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+             <tr ng-repeat-end ng-repeat="subrow in project.servers.slice(0,4)" style='display:none;' class='hiderow {{project.id}}'>
+                 <td style='border-top:none;'></td>
+                 <td style='border-top:none;' colspan="3">
+                     <span ng-if="subrow.ssm_status=='Alive' || subrow.ssm_status=='Online'"><img style="width:15px;margin-top:-6px;" src="images/green-circle.png"/></span>
+                     <span ng-if="subrow.ssm_status=='Stop' || subrow.ssm_status=='ConnectionLost' || subrow.ssm_status=='Inactive' ||  subrow.ssm_status=='Error'"><img style="width:15px;margin-top:-6px;" src="images/grey_circle.png"/></span>
+                     <a href="javascript:void(0)" ng-click="setServerId(subrow.serverId,subrow.ssm_status)" class="ng-binding">{{ subrow.serverName }}</a>
+                     <a href="javascript:void(0)" ng-click='checkSSMAgentStatus(subrow.serverId,subrow.serverIP,subrow.customerIAMId)'><img class="checkSSMStatus_{{subrow.serverId}}" src="images/refresh_icon.png" style="width: 20px;"></a>
+                     <span ng-if='project.servers.length > 4 && $index >2'><a style='color:#337ab7' href="#/server" ng-click="setProjectId(project.id)">&nbsp;&nbsp;more&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a></span>
+                 </td>
+            </tr>
+        </table>      
+    </div>
+</section>
+<style>
+    table tr td{text-align: left;}table tr th{text-align: left;font-weight: bold;}
+    .btn-xs,.btn-xs:hover{background-color: #17a0a2;border-color: #17a0a2;}
+</style>

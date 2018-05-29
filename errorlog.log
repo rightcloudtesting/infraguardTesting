@@ -1,0 +1,1114 @@
+[2018-05-29T02:37:00.823] [ERROR] cheese - error in assumeRole
+[2018-05-29T02:37:00.825] [ERROR] cheese - { AccessDenied: User: arn:aws:sts::225368676420:assumed-role/SallysAmazonEC2RoleForSSM/i-07cfb5d89d3544d6f is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::659845297423:role/infraguard-switchrole
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/protocol/query.js:47:29)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'User: arn:aws:sts::225368676420:assumed-role/SallysAmazonEC2RoleForSSM/i-07cfb5d89d3544d6f is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::659845297423:role/infraguard-switchrole',
+  code: 'AccessDenied',
+  time: 2018-05-29T02:37:00.821Z,
+  requestId: '2a08c613-62e9-11e8-9dec-9964a8ab81c7',
+  statusCode: 403,
+  retryable: false,
+  retryDelay: 21.350943507584176 }
+[2018-05-29T02:47:31.910] [ERROR] cheese - error in assumeRole
+[2018-05-29T02:47:31.911] [ERROR] cheese - { AccessDenied: User: arn:aws:sts::225368676420:assumed-role/SallysAmazonEC2RoleForSSM/i-07cfb5d89d3544d6f is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::225368676420:role/SallysAmazonEC2RoleForSSM
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/protocol/query.js:47:29)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'User: arn:aws:sts::225368676420:assumed-role/SallysAmazonEC2RoleForSSM/i-07cfb5d89d3544d6f is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::225368676420:role/SallysAmazonEC2RoleForSSM',
+  code: 'AccessDenied',
+  time: 2018-05-29T02:47:31.910Z,
+  requestId: 'a231290d-62ea-11e8-aca2-fb92749d9f97',
+  statusCode: 403,
+  retryable: false,
+  retryDelay: 54.06112137272814 }
+[2018-05-29T02:58:01.236] [ERROR] cheese - error in assumeRole
+[2018-05-29T02:58:01.236] [ERROR] cheese - { AccessDenied: User: arn:aws:sts::225368676420:assumed-role/infraguard-switchrole/i-07cfb5d89d3544d6f is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::225368676420:role/SallysAmazonEC2RoleForSSM
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/protocol/query.js:47:29)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'User: arn:aws:sts::225368676420:assumed-role/infraguard-switchrole/i-07cfb5d89d3544d6f is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::225368676420:role/SallysAmazonEC2RoleForSSM',
+  code: 'AccessDenied',
+  time: 2018-05-29T02:58:01.235Z,
+  requestId: '194e5d62-62ec-11e8-8c11-3fc4705672b6',
+  statusCode: 403,
+  retryable: false,
+  retryDelay: 36.95108983503832 }
+[2018-05-29T03:08:50.600] [ERROR] cheese - region undefined
+[2018-05-29T03:08:50.600] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:50.600] [ERROR] cheese - { Reservations: 
+   [ { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-052ab0548152bc4d6' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-03c5f142e35585beb' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-0aa83383665329a24' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-05a40f40117b72586' } ] }
+[2018-05-29T03:08:50.686] [ERROR] cheese - error in describeInstances
+[2018-05-29T03:08:50.686] [ERROR] cheese - { OptInRequired: You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.',
+  code: 'OptInRequired',
+  time: 2018-05-29T03:08:50.685Z,
+  requestId: 'e7431858-7088-40f3-808c-cf2fbbfe5ec9',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 8.932283528761609 }
+[2018-05-29T03:08:50.690] [ERROR] cheese - region undefined
+[2018-05-29T03:08:50.690] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:50.690] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:50.697] [ERROR] cheese - region undefined
+[2018-05-29T03:08:50.697] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:50.697] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:50.848] [ERROR] cheese - region undefined
+[2018-05-29T03:08:50.848] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:50.848] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:50.854] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:50.855] [ERROR] cheese - { Entities: 
+   [ { Id: 'i-04c8cb3a600c7ef2f', Data: [Object] },
+     { Id: 'i-07cfb5d89d3544d6f', Data: [Object] },
+     { Id: 'i-0ba08a34a7c001806', Data: [Object] } ] }
+[2018-05-29T03:08:51.048] [ERROR] cheese - region undefined
+[2018-05-29T03:08:51.048] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:51.048] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:51.053] [ERROR] cheese - region undefined
+[2018-05-29T03:08:51.054] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:51.054] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:51.136] [ERROR] cheese - region undefined
+[2018-05-29T03:08:51.136] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:51.136] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:51.191] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:51.191] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:51.307] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:51.307] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:51.309] [ERROR] cheese - region undefined
+[2018-05-29T03:08:51.309] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:51.309] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:51.320] [ERROR] cheese - region undefined
+[2018-05-29T03:08:51.320] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:51.320] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:51.402] [ERROR] cheese - region undefined
+[2018-05-29T03:08:51.402] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:51.403] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:51.426] [ERROR] cheese - region undefined
+[2018-05-29T03:08:51.426] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:51.427] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:51.438] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:51.438] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:51.531] [ERROR] cheese - region undefined
+[2018-05-29T03:08:51.532] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:51.532] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:51.545] [ERROR] cheese - region undefined
+[2018-05-29T03:08:51.545] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:51.545] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:51.575] [ERROR] cheese - region undefined
+[2018-05-29T03:08:51.575] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:51.575] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:51.789] [ERROR] cheese - error in describeInstances
+[2018-05-29T03:08:51.789] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T03:08:51.788Z,
+  requestId: '421289a5-e5fd-4ace-96ff-b3a4867f5dfe',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 4.549633418323484 }
+[2018-05-29T03:08:51.991] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:51.991] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:52.045] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:52.045] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:52.187] [ERROR] cheese - error in describeInstances
+[2018-05-29T03:08:52.188] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T03:08:52.186Z,
+  requestId: 'e16ee1fb-4246-4c4c-b123-12b3cff19cad',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 76.13726008006087 }
+[2018-05-29T03:08:52.243] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:52.243] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:52.335] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:52.335] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:52.378] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:52.378] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:52.379] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:52.380] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:52.469] [ERROR] cheese - region undefined
+[2018-05-29T03:08:52.470] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:08:52.470] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:08:52.471] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:52.471] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:52.471] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:52.471] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:52.843] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:52.843] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:52.874] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:52.874] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:08:54.257] [ERROR] cheese - data in getInventory
+[2018-05-29T03:08:54.257] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:28.384] [ERROR] cheese - region undefined
+[2018-05-29T03:12:28.385] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:28.385] [ERROR] cheese - { Reservations: 
+   [ { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-052ab0548152bc4d6' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-03c5f142e35585beb' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-0aa83383665329a24' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-05a40f40117b72586' } ] }
+[2018-05-29T03:12:28.481] [ERROR] cheese - error in describeInstances
+[2018-05-29T03:12:28.481] [ERROR] cheese - { OptInRequired: You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.',
+  code: 'OptInRequired',
+  time: 2018-05-29T03:12:28.481Z,
+  requestId: '5cdcc134-9710-4731-8d15-993811a8c12a',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 86.28373528567208 }
+[2018-05-29T03:12:28.483] [ERROR] cheese - region undefined
+[2018-05-29T03:12:28.483] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:28.483] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:28.510] [ERROR] cheese - region undefined
+[2018-05-29T03:12:28.511] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:28.511] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:28.512] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:28.514] [ERROR] cheese - { Entities: 
+   [ { Id: 'i-04c8cb3a600c7ef2f', Data: [Object] },
+     { Id: 'i-07cfb5d89d3544d6f', Data: [Object] },
+     { Id: 'i-0ba08a34a7c001806', Data: [Object] } ] }
+[2018-05-29T03:12:28.658] [ERROR] cheese - region undefined
+[2018-05-29T03:12:28.658] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:28.658] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:28.875] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:28.876] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:28.892] [ERROR] cheese - region undefined
+[2018-05-29T03:12:28.892] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:28.892] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:28.933] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:28.933] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:29.021] [ERROR] cheese - region undefined
+[2018-05-29T03:12:29.021] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:29.021] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:29.106] [ERROR] cheese - region undefined
+[2018-05-29T03:12:29.106] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:29.106] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:29.150] [ERROR] cheese - region undefined
+[2018-05-29T03:12:29.150] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:29.150] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:29.152] [ERROR] cheese - region undefined
+[2018-05-29T03:12:29.152] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:29.152] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:29.189] [ERROR] cheese - region undefined
+[2018-05-29T03:12:29.189] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:29.190] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:29.239] [ERROR] cheese - region undefined
+[2018-05-29T03:12:29.239] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:29.239] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:29.279] [ERROR] cheese - region undefined
+[2018-05-29T03:12:29.281] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:29.282] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:29.295] [ERROR] cheese - region undefined
+[2018-05-29T03:12:29.303] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:29.303] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:29.406] [ERROR] cheese - region undefined
+[2018-05-29T03:12:29.406] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:29.406] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:29.503] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:29.503] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:29.505] [ERROR] cheese - error in describeInstances
+[2018-05-29T03:12:29.505] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T03:12:29.505Z,
+  requestId: '9c544da4-99ef-47cb-a482-21f00d171afd',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 70.32548959840024 }
+[2018-05-29T03:12:29.860] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:29.860] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:29.885] [ERROR] cheese - region undefined
+[2018-05-29T03:12:29.885] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:12:29.885] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:12:30.068] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:30.068] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:30.090] [ERROR] cheese - error in describeInstances
+[2018-05-29T03:12:30.091] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T03:12:30.090Z,
+  requestId: '8e7624c6-d744-4802-bbe6-bebb47162cd3',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 17.880847553345824 }
+[2018-05-29T03:12:30.219] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:30.219] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:30.288] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:30.288] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:30.301] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:30.301] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:30.378] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:30.378] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:30.462] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:30.462] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:30.584] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:30.584] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:30.641] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:30.641] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:30.801] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:30.801] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:12:31.633] [ERROR] cheese - data in getInventory
+[2018-05-29T03:12:31.634] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:55.125] [ERROR] cheese - region undefined
+[2018-05-29T03:17:55.127] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:55.128] [ERROR] cheese - { Reservations: 
+   [ { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-052ab0548152bc4d6' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-03c5f142e35585beb' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-0aa83383665329a24' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-05a40f40117b72586' } ] }
+[2018-05-29T03:17:55.281] [ERROR] cheese - region undefined
+[2018-05-29T03:17:55.281] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:55.281] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:55.293] [ERROR] cheese - region undefined
+[2018-05-29T03:17:55.293] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:55.293] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:55.297] [ERROR] cheese - error in describeInstances
+[2018-05-29T03:17:55.297] [ERROR] cheese - { OptInRequired: You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.',
+  code: 'OptInRequired',
+  time: 2018-05-29T03:17:55.295Z,
+  requestId: 'ced535ac-6986-407b-bf6a-29b6c777e55c',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 3.314866933988103 }
+[2018-05-29T03:17:55.388] [ERROR] cheese - region undefined
+[2018-05-29T03:17:55.388] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:55.388] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:55.397] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:55.397] [ERROR] cheese - { Entities: 
+   [ { Id: 'i-04c8cb3a600c7ef2f', Data: [Object] },
+     { Id: 'i-07cfb5d89d3544d6f', Data: [Object] },
+     { Id: 'i-0ba08a34a7c001806', Data: [Object] } ] }
+[2018-05-29T03:17:55.539] [ERROR] cheese - region undefined
+[2018-05-29T03:17:55.539] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:55.539] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:55.668] [ERROR] cheese - region undefined
+[2018-05-29T03:17:55.668] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:55.668] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:55.773] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:55.773] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:55.783] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:55.783] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:55.848] [ERROR] cheese - region undefined
+[2018-05-29T03:17:55.849] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:55.849] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:55.895] [ERROR] cheese - region undefined
+[2018-05-29T03:17:55.895] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:55.895] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:55.918] [ERROR] cheese - region undefined
+[2018-05-29T03:17:55.918] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:55.918] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:55.923] [ERROR] cheese - region undefined
+[2018-05-29T03:17:55.923] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:55.923] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:55.961] [ERROR] cheese - region undefined
+[2018-05-29T03:17:55.961] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:55.961] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:55.969] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:55.969] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:56.048] [ERROR] cheese - region undefined
+[2018-05-29T03:17:56.048] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:56.048] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:56.137] [ERROR] cheese - region undefined
+[2018-05-29T03:17:56.137] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:56.137] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:56.294] [ERROR] cheese - error in describeInstances
+[2018-05-29T03:17:56.295] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T03:17:56.293Z,
+  requestId: 'eed20d85-5810-4ae4-a2fa-71f97e97d305',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 43.885298435699546 }
+[2018-05-29T03:17:56.401] [ERROR] cheese - region undefined
+[2018-05-29T03:17:56.401] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:56.401] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:56.617] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:56.617] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:56.771] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:56.771] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:56.786] [ERROR] cheese - error in describeInstances
+[2018-05-29T03:17:56.786] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T03:17:56.782Z,
+  requestId: 'd71d76d6-239d-4ed1-aaa2-e163b895d066',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 34.922462209282145 }
+[2018-05-29T03:17:56.808] [ERROR] cheese - region undefined
+[2018-05-29T03:17:56.808] [ERROR] cheese - data in describeInstances
+[2018-05-29T03:17:56.808] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T03:17:56.874] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:56.875] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:56.998] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:56.998] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:57.072] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:57.072] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:57.100] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:57.100] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:57.187] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:57.188] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:57.287] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:57.287] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:57.492] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:57.492] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:57.789] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:57.789] [ERROR] cheese - { Entities: [] }
+[2018-05-29T03:17:58.558] [ERROR] cheese - data in getInventory
+[2018-05-29T03:17:58.558] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:13.335] [ERROR] cheese - region undefined
+[2018-05-29T04:30:13.335] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:13.335] [ERROR] cheese - { Reservations: 
+   [ { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-052ab0548152bc4d6' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-03c5f142e35585beb' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-0aa83383665329a24' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-05a40f40117b72586' } ] }
+[2018-05-29T04:30:13.454] [ERROR] cheese - region undefined
+[2018-05-29T04:30:13.455] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:13.455] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:13.460] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:13.460] [ERROR] cheese - { Entities: 
+   [ { Id: 'i-04c8cb3a600c7ef2f', Data: [Object] },
+     { Id: 'i-07cfb5d89d3544d6f', Data: [Object] },
+     { Id: 'i-0ba08a34a7c001806', Data: [Object] } ] }
+[2018-05-29T04:30:13.485] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:30:13.485] [ERROR] cheese - { OptInRequired: You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.',
+  code: 'OptInRequired',
+  time: 2018-05-29T04:30:13.483Z,
+  requestId: '0ed0681c-ec95-455c-8964-7695f89aaa4b',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 92.31421643179519 }
+[2018-05-29T04:30:13.575] [ERROR] cheese - region undefined
+[2018-05-29T04:30:13.576] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:13.576] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:13.828] [ERROR] cheese - region undefined
+[2018-05-29T04:30:13.828] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:13.828] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:13.853] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:13.853] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:13.879] [ERROR] cheese - region undefined
+[2018-05-29T04:30:13.879] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:13.879] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:13.914] [ERROR] cheese - region undefined
+[2018-05-29T04:30:13.914] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:13.914] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:13.979] [ERROR] cheese - region undefined
+[2018-05-29T04:30:13.979] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:13.979] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:14.027] [ERROR] cheese - region undefined
+[2018-05-29T04:30:14.028] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:14.028] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:14.048] [ERROR] cheese - region undefined
+[2018-05-29T04:30:14.049] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:14.049] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:14.052] [ERROR] cheese - region undefined
+[2018-05-29T04:30:14.052] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:14.052] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:14.099] [ERROR] cheese - region undefined
+[2018-05-29T04:30:14.099] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:14.099] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:14.149] [ERROR] cheese - region undefined
+[2018-05-29T04:30:14.149] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:14.149] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:14.274] [ERROR] cheese - region undefined
+[2018-05-29T04:30:14.274] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:14.274] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:14.350] [ERROR] cheese - region undefined
+[2018-05-29T04:30:14.350] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:14.350] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:14.442] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:14.442] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:14.509] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:30:14.518] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T04:30:14.506Z,
+  requestId: 'd7b61ff2-6539-40fa-8f40-888c36dd713b',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 81.5408722469531 }
+[2018-05-29T04:30:14.745] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:14.745] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:14.837] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:14.838] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:14.941] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:14.941] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:15.043] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:15.043] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:15.047] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:15.047] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:15.230] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:15.230] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:15.310] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:15.311] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:15.340] [ERROR] cheese - region undefined
+[2018-05-29T04:30:15.340] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:30:15.340] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:30:15.345] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:30:15.345] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T04:30:15.345Z,
+  requestId: '24be43ca-dcd5-46bd-b8fe-d8c93c45c8dc',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 25.554356890451512 }
+[2018-05-29T04:30:15.524] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:15.524] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:15.532] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:15.532] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:15.603] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:15.603] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:15.727] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:15.727] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:30:17.066] [ERROR] cheese - data in getInventory
+[2018-05-29T04:30:17.066] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:19.742] [ERROR] cheese - region undefined
+[2018-05-29T04:37:19.742] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:19.742] [ERROR] cheese - { Reservations: 
+   [ { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-052ab0548152bc4d6' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-03c5f142e35585beb' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-0aa83383665329a24' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-05a40f40117b72586' } ] }
+[2018-05-29T04:37:19.894] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:37:19.894] [ERROR] cheese - { OptInRequired: You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.',
+  code: 'OptInRequired',
+  time: 2018-05-29T04:37:19.894Z,
+  requestId: '0e78940e-c2bb-4851-be81-d89da706c670',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 25.119323245227253 }
+[2018-05-29T04:37:19.902] [ERROR] cheese - region undefined
+[2018-05-29T04:37:19.902] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:19.902] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:19.928] [ERROR] cheese - region undefined
+[2018-05-29T04:37:19.928] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:19.928] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.009] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:20.009] [ERROR] cheese - { Entities: 
+   [ { Id: 'i-04c8cb3a600c7ef2f', Data: [Object] },
+     { Id: 'i-07cfb5d89d3544d6f', Data: [Object] },
+     { Id: 'i-0ba08a34a7c001806', Data: [Object] } ] }
+[2018-05-29T04:37:20.080] [ERROR] cheese - region undefined
+[2018-05-29T04:37:20.080] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:20.080] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.240] [ERROR] cheese - region undefined
+[2018-05-29T04:37:20.240] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:20.241] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.296] [ERROR] cheese - region undefined
+[2018-05-29T04:37:20.296] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:20.296] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.341] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:20.341] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:20.394] [ERROR] cheese - region undefined
+[2018-05-29T04:37:20.394] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:20.394] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.408] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:20.408] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:20.451] [ERROR] cheese - region undefined
+[2018-05-29T04:37:20.451] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:20.454] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.516] [ERROR] cheese - region undefined
+[2018-05-29T04:37:20.516] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:20.516] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.638] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:20.638] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:20.659] [ERROR] cheese - region undefined
+[2018-05-29T04:37:20.660] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:20.660] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.690] [ERROR] cheese - region undefined
+[2018-05-29T04:37:20.690] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:20.691] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.699] [ERROR] cheese - region undefined
+[2018-05-29T04:37:20.699] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:20.699] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.749] [ERROR] cheese - region undefined
+[2018-05-29T04:37:20.749] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:20.749] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.777] [ERROR] cheese - region undefined
+[2018-05-29T04:37:20.777] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:20.777] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:20.873] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:37:20.873] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T04:37:20.873Z,
+  requestId: '1ae9e027-437e-4df6-9ab8-7227253953be',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 98.61121812959392 }
+[2018-05-29T04:37:21.173] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:21.173] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:21.355] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:21.355] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:21.376] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:21.376] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:21.474] [ERROR] cheese - region undefined
+[2018-05-29T04:37:21.474] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:37:21.474] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:37:21.507] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:37:21.507] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T04:37:21.506Z,
+  requestId: '96034f8c-4951-47e2-802d-e6156d039f03',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 72.38656436094297 }
+[2018-05-29T04:37:21.581] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:21.582] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:21.592] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:21.592] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:21.609] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:21.609] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:21.845] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:21.845] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:22.013] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:22.013] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:22.057] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:22.057] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:22.084] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:22.084] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:37:23.228] [ERROR] cheese - data in getInventory
+[2018-05-29T04:37:23.228] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:41.895] [ERROR] cheese - region undefined
+[2018-05-29T04:49:41.897] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:41.898] [ERROR] cheese - { Reservations: 
+   [ { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-052ab0548152bc4d6' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-03c5f142e35585beb' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-0aa83383665329a24' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-05a40f40117b72586' } ] }
+[2018-05-29T04:49:42.008] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:49:42.008] [ERROR] cheese - { OptInRequired: You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.',
+  code: 'OptInRequired',
+  time: 2018-05-29T04:49:42.007Z,
+  requestId: '7f8c394a-4bba-416c-9951-e6d7b74b397a',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 78.29862816300606 }
+[2018-05-29T04:49:42.053] [ERROR] cheese - region undefined
+[2018-05-29T04:49:42.053] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:42.053] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:42.084] [ERROR] cheese - region undefined
+[2018-05-29T04:49:42.084] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:42.084] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:42.125] [ERROR] cheese - region undefined
+[2018-05-29T04:49:42.125] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:42.125] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:42.254] [ERROR] cheese - region undefined
+[2018-05-29T04:49:42.254] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:42.256] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:42.323] [ERROR] cheese - region undefined
+[2018-05-29T04:49:42.323] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:42.327] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:42.445] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:42.445] [ERROR] cheese - { Entities: 
+   [ { Id: 'i-04c8cb3a600c7ef2f', Data: [Object] },
+     { Id: 'i-07cfb5d89d3544d6f', Data: [Object] },
+     { Id: 'i-0ba08a34a7c001806', Data: [Object] } ] }
+[2018-05-29T04:49:42.719] [ERROR] cheese - region undefined
+[2018-05-29T04:49:42.719] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:42.719] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:42.788] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:42.789] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:42.914] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:42.914] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:42.971] [ERROR] cheese - region undefined
+[2018-05-29T04:49:42.971] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:42.971] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:43.002] [ERROR] cheese - region undefined
+[2018-05-29T04:49:43.003] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:43.003] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:43.061] [ERROR] cheese - region undefined
+[2018-05-29T04:49:43.061] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:43.061] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:43.092] [ERROR] cheese - region undefined
+[2018-05-29T04:49:43.092] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:43.092] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:43.123] [ERROR] cheese - region undefined
+[2018-05-29T04:49:43.123] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:43.123] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:43.151] [ERROR] cheese - region undefined
+[2018-05-29T04:49:43.151] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:43.151] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:43.158] [ERROR] cheese - region undefined
+[2018-05-29T04:49:43.158] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:43.158] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:43.226] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:43.226] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:43.301] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:49:43.301] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T04:49:43.299Z,
+  requestId: 'a171dd07-74ef-4ea6-bfc5-ac21327bf9c5',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 1.1212407096199195 }
+[2018-05-29T04:49:43.430] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:43.430] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:43.517] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:43.518] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:43.664] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:43.665] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:43.795] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:49:43.795] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T04:49:43.793Z,
+  requestId: 'd617b3f0-d961-4b17-975b-52501eb2bbb2',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 39.44627444590814 }
+[2018-05-29T04:49:43.917] [ERROR] cheese - region undefined
+[2018-05-29T04:49:43.917] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:49:43.917] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:49:44.143] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:44.143] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:44.147] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:44.147] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:44.206] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:44.206] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:44.218] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:44.218] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:44.241] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:44.241] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:44.332] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:44.332] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:44.714] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:44.714] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:49:45.913] [ERROR] cheese - data in getInventory
+[2018-05-29T04:49:45.913] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:52.057] [ERROR] cheese - region undefined
+[2018-05-29T04:50:52.060] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:52.060] [ERROR] cheese - { Reservations: 
+   [ { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-052ab0548152bc4d6' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-03c5f142e35585beb' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-0aa83383665329a24' },
+     { Groups: [],
+       Instances: [Object],
+       OwnerId: '225368676420',
+       ReservationId: 'r-05a40f40117b72586' } ] }
+[2018-05-29T04:50:52.311] [ERROR] cheese - region undefined
+[2018-05-29T04:50:52.311] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:52.311] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:52.325] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:50:52.325] [ERROR] cheese - { OptInRequired: You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.',
+  code: 'OptInRequired',
+  time: 2018-05-29T04:50:52.325Z,
+  requestId: 'c6268860-d0e7-416e-bf23-0a39dbe2c83c',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 0.9900010029289197 }
+[2018-05-29T04:50:52.336] [ERROR] cheese - region undefined
+[2018-05-29T04:50:52.337] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:52.337] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:52.415] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:52.416] [ERROR] cheese - { Entities: 
+   [ { Id: 'i-04c8cb3a600c7ef2f', Data: [Object] },
+     { Id: 'i-07cfb5d89d3544d6f', Data: [Object] },
+     { Id: 'i-0ba08a34a7c001806', Data: [Object] } ] }
+[2018-05-29T04:50:52.512] [ERROR] cheese - region undefined
+[2018-05-29T04:50:52.512] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:52.512] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:52.676] [ERROR] cheese - region undefined
+[2018-05-29T04:50:52.676] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:52.676] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:52.716] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:52.716] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:52.734] [ERROR] cheese - region undefined
+[2018-05-29T04:50:52.734] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:52.734] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:52.766] [ERROR] cheese - region undefined
+[2018-05-29T04:50:52.766] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:52.767] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:52.829] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:52.829] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:52.884] [ERROR] cheese - region undefined
+[2018-05-29T04:50:52.885] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:52.885] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:52.952] [ERROR] cheese - region undefined
+[2018-05-29T04:50:52.952] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:52.952] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:52.987] [ERROR] cheese - region undefined
+[2018-05-29T04:50:52.987] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:52.987] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:53.057] [ERROR] cheese - region undefined
+[2018-05-29T04:50:53.057] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:53.057] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:53.078] [ERROR] cheese - region undefined
+[2018-05-29T04:50:53.078] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:53.078] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:53.133] [ERROR] cheese - region undefined
+[2018-05-29T04:50:53.134] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:53.134] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:53.149] [ERROR] cheese - region undefined
+[2018-05-29T04:50:53.149] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:53.149] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:53.304] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:53.306] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:53.375] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:50:53.375] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T04:50:53.374Z,
+  requestId: '79378b4e-9526-4751-bc58-cfae421c81e2',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 58.06308577129593 }
+[2018-05-29T04:50:53.760] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:53.760] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:53.767] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:53.767] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:53.802] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:53.802] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:53.937] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:53.937] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:53.969] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:53.969] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:53.982] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:53.982] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:54.092] [ERROR] cheese - region undefined
+[2018-05-29T04:50:54.092] [ERROR] cheese - data in describeInstances
+[2018-05-29T04:50:54.094] [ERROR] cheese - { Reservations: [] }
+[2018-05-29T04:50:54.148] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:54.156] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:54.157] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:54.157] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:54.184] [ERROR] cheese - error in describeInstances
+[2018-05-29T04:50:54.184] [ERROR] cheese - { AuthFailure: AWS was not able to validate the provided access credentials
+    at Request.extractError (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/services/ec2.js:50:35)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:105:20)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:77:10)
+    at Request.emit (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:683:14)
+    at Request.transition (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/request.js:685:12)
+    at Request.callListeners (/home/ec2-user/infraguard/infraguard/node_modules/aws-sdk/lib/sequential_executor.js:115:18)
+  message: 'AWS was not able to validate the provided access credentials',
+  code: 'AuthFailure',
+  time: 2018-05-29T04:50:54.183Z,
+  requestId: 'cdbee9b4-3ea6-486b-8c91-13c39c0504cf',
+  statusCode: 401,
+  retryable: false,
+  retryDelay: 17.725103934150923 }
+[2018-05-29T04:50:54.412] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:54.412] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:54.432] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:54.432] [ERROR] cheese - { Entities: [] }
+[2018-05-29T04:50:55.816] [ERROR] cheese - data in getInventory
+[2018-05-29T04:50:55.816] [ERROR] cheese - { Entities: [] }

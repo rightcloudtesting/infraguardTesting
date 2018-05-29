@@ -1,0 +1,35 @@
+﻿<link rel="stylesheet" href="css/style12.css">
+<section class="Profilesection">
+            <div class="companyDetailsBg addCompanyDetail" style='width: 100%;'>
+                <div style="font-weight:bold;font-size: 22px;" ng-if="searchData.length <=0 && search!=''">There is no results for your search.</div>
+                <div style="font-weight:bold;font-size: 22px;" ng-if="searchData.length>0">Search results {{searchData.length}}</div>
+                <table class="table" style="width:100%;margin-top: 25px;">
+                    <tr ng-if="searchData.length>0">
+                          <th>S.no</th>
+                          <th>Server Name</th>
+                          <th>Instance Id</th>
+                          <th>Region</th>
+                           <th>Company Name</th>
+                          <th>Project Name</th>
+                          <th>State</th>
+                          <th>SSM Status</th>
+                    </tr>
+                  <tr ng-repeat="row in searchData ">
+                        <td>#{{$index+1}}</td> 
+                        <td ng-if="row.status=='Alive' || row.status=='Online'"><img src="images/green-circle.png"/>&nbsp;&nbsp;&nbsp;<a ng-click="setServerId(row.id,row.status)" style="cursor:pointer;">{{row.serverName}}</a></td>
+                        <td ng-if="row.status=='Stop' || row.status=='ConnectionLost' || row.status=='Inactive' || row.status=='Error'"><img width="15px"  src="images/grey_circle.png"/>&nbsp;&nbsp;&nbsp;<a ng-click="setServerId(row.id,row.status)" style="cursor:pointer;">{{row.serverName}}</a></td>
+                        <td ng-if="row.status==null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a ng-click="showInstanceDetails(row.raw_data,row.serverName)" style="cursor:pointer;">{{row.serverName}}</a></td>
+                        <td>{{row.instanceId}}</td>
+                        <td>{{row.region}}</td>
+                        <td>{{row.companyName}} </td>
+                        <td>{{row.projectName}} </td>
+                        <td>{{row.instanceState}}</td>
+                        <td>{{row.status}}</td>
+                  </tr>
+              </table>
+            </div>
+</section>
+<style>
+    table tr td{text-align: left;}table tr th{text-align: left;font-weight: bold;}
+    .btn-xs,.btn-xs:hover{background-color: #17a0a2;border-color: #17a0a2;}
+</style>

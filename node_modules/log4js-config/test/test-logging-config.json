@@ -1,0 +1,12 @@
+{
+    "appenders": [
+        {
+            "type": "console"
+        }
+    ],
+
+    "levels": {
+        "net.renalias.test.1": "ERROR",
+        "net.renalias.test.2": "INFO"
+    }
+}

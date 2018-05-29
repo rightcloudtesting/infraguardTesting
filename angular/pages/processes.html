@@ -1,0 +1,134 @@
+<section class="Profilesection">
+    <a href='#/serverDetails' ng-click="backKey()" style="margin-left: 20px"><button type="button" class="btn btn-primary btn-xs">&lt;&lt; Back</button></a>
+    <div class="companyDetailsBg addCompanyDetail" style='width:100%'>
+        <div class="profileHead">Top Processes by {{type}}</div>
+        <div class="form-group" style="width:25%;float:right;">
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                <input type="text" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" placeholder="Search for process" ng-model="searchText">
+            </div>      
+        </div>
+        <div ng-if="userElements.indexOf(20) != -1"><b style="font-weight: bold;margin-left: 5px">Clean Caches :&nbsp;&nbsp;&nbsp;&nbsp;</b> 
+            <a ng-click='cleanMemory("echo 1 > /proc/sys/vm/drop_caches",servers[0].serverIP,1)'><button type="button" class="btn btn-primary btn-xs">Echo 1</button></a>&nbsp;&nbsp;&nbsp;
+            <a ng-click='cleanMemory("echo 2 > /proc/sys/vm/drop_caches",servers[0].serverIP,2)'><button type="button" class="btn btn-primary btn-xs">Echo 2</button></a>&nbsp;&nbsp;&nbsp;
+            <a ng-click='cleanMemory("echo 3 > /proc/sys/vm/drop_caches",servers[0].serverIP,3)'><button type="button" class="btn btn-primary btn-xs">Echo 3</button></a>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row" style="float:left;margin-left: 5px;margin-bottom: 15px;" >
+            <div style="width:125px;color:#2670B7">Memory Utilization -</div>
+            <div style="width:300px;">{{memorySpace}}</div>
+        </div>
+        <div class="row" style="float:left;margin-left: 20px;margin-bottom: 10px;" ng-if="buffer!='' && buffer!=null" >
+            <div style="width:50px;color:#2670B7">Buffer -</div>
+            <div style="width:200px;">{{buffer}}</div>
+            <div style="width:50px;color:#2670B7">Cache -</div>
+            <div style="width:200px;">{{cache}}</div>
+        </div>
+        <div class="clearfix"></div>            
+        <table class="table table-fixed" ng-if='header == "ML"'>
+            <thead>
+                <tr>    
+                    <th class="col-xs-1">#</th>
+                    <th class="col-xs-1">PID</th>
+                    <th class="col-xs-1">USER</th>
+                    <th class="col-xs-1">%CPU</th>
+                    <th class="col-xs-1">%MEM</th>
+                    <th class="col-xs-5">COMMAND</th>
+                    <th class="col-xs-2">&nbsp;&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in responseProcesses.slice(0, 30) | filter:searchText">
+                    <td class="col-xs-1">{{$index + 1}}</td>
+                    <td class="col-xs-1">{{row[1]}}</td>
+                    <td class="col-xs-1">{{row[0]}}</td>
+                    <td class="col-xs-1">{{row[2]}}</td>
+                    <td class="col-xs-1">{{row[3]}}</td>
+                    <td class="col-xs-5">{{row[10]}}</td>
+                    <td class="col-xs-2"><a ng-click='killProcess(row[1], row[10])' ng-if="userElements.indexOf(16) != -1"><button type="button" class="btn btn-primary btn-xs">kill process</button></a></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-fixed" ng-if='header == "MW"'>
+            <thead>
+                <tr>    
+                    <th class="col-xs-1">#</th>
+                    <th class="col-xs-1">PID</th>
+                    <th class="col-xs-1">NPM(K)</th>
+                    <th class="col-xs-1">PM(K)</th>
+                    <th class="col-xs-1">WS(K)</th>
+                    <th class="col-xs-1">CPU</th>
+                    <th class="col-xs-4">Process</th>
+                    <th class="col-xs-2">&nbsp;&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in responseProcesses.slice(0, 30)">
+                    <td class="col-xs-1">{{$index + 1}}</td>
+                    <td class="col-xs-1">{{row[6]}}</td>
+                    <td class="col-xs-1">{{row[2]}}</td>
+                    <td class="col-xs-1">{{row[3]}}</td>
+                    <td class="col-xs-1">{{row[4]}}</td>
+                    <td class="col-xs-1">{{row[5]}}</td>
+                    <td class="col-xs-4">{{row[7]}}</td>
+                    <td class="col-xs-2"><a ng-click='killProcess(row[6], row[7])' ng-if="userElements.indexOf(16) != -1"><button type="button" class="btn btn-primary btn-xs">kill process</button></a></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-fixed" ng-if='header == "CL"'>
+            <thead>
+                <tr>    
+                    <th class="col-xs-1">#</th>
+                    <th class="col-xs-1">PID</th>
+                    <th class="col-xs-1">USER</th>
+                    <th class="col-xs-1">%CPU</th>
+                    <th class="col-xs-1">%MEM</th>
+                    <th class="col-xs-5">COMMAND</th>
+                    <th class="col-xs-2">&nbsp;&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in responseProcesses.slice(0, 30)">
+                    <td class="col-xs-1">{{$index + 1}}</td>
+                    <td class="col-xs-1">{{row[1]}}</td>
+                    <td class="col-xs-1">{{row[0]}}</td>
+                    <td class="col-xs-1">{{row[2]}}</td>
+                    <td class="col-xs-1">{{row[3]}}</td>
+                    <td class="col-xs-5">{{row[10]}}</td>
+                    <td class="col-xs-2"><a ng-click='killProcess(row[1], row[10])' ng-if="userElements.indexOf(16) != -1"><button type="button" class="btn btn-primary btn-xs">kill process</button></a></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-fixed"  ng-if='header == "CW"'>
+            <thead>
+                <tr>    
+                    <th class="col-xs-1">#</th>
+                    <th class="col-xs-1">PID</th>
+                    <th class="col-xs-1">NPM(K)</th>
+                    <th class="col-xs-1">PM(K)</th>
+                    <th class="col-xs-1">WS(K)</th>
+                    <th class="col-xs-1">CPU</th>
+                    <th class="col-xs-4">Process</th>
+                    <th class="col-xs-2">&nbsp;&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in responseProcesses.slice(0, 30)">
+                    <td class="col-xs-1">{{$index + 1}}</td>
+                    <td class="col-xs-1">{{row[6]}}</td>
+                    <td class="col-xs-1">{{row[2]}}</td>
+                    <td class="col-xs-1">{{row[3]}}</td>
+                    <td class="col-xs-1">{{row[4]}}</td>
+                    <td class="col-xs-1">{{row[5]}}</td>
+                    <td class="col-xs-4">{{row[7]}}</td>
+                    <td class="col-xs-2"><a ng-click='killProcess(row[6], row[7])' ng-if="userElements.indexOf(16) != -1"><button type="button" class="btn btn-primary btn-xs">kill process</button></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div> 
+</section>
+<style>
+    table tr td{text-align: left;}table tr th{text-align: left;font-weight: bold;}
+    .btn-xs,.btn-xs:hover{background-color: #17a0a2;border-color: #17a0a2;}
+    .row > div {display: inline-block;}
+</style>

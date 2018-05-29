@@ -1,0 +1,33 @@
+<section>
+<div class="profileRight" style="position:fixed ! important;width: 75% ! important;left: 12% ! important">
+	  <div class="mfaLeft">
+	  	<a href="javascript:void(0)" ng-click="whatisMFA()"><h1>MULTI-FACTOR AUTHENTICATION </h1><i class="fa fa-question headerQuestionMark" aria-hidden="true"></i></a>
+	  	<p ng-show="animate" class="animate-show animate-hide">
+  		Multi-factor authentication (MFA/2FA) is a method of computer access control in which a user is granted access only after successfully
+presenting several separate pieces of evidence to an authentication mechanism – typically at least two of the following categories:
+knowledge (something they know), possession (something they have), and inherence (something they are).<br><br>
+
+<strong>Requirement :</strong><br>
+To enable two-factor authentication you will need a smart phone running any authenticator app such as Google Authenticator ,
+Authy or Red Hat's FreeOTP Authenticator, which is running a timed cryptographic key generator that generates a 6 digit number
+that expires every 30 seconds.Each time you log in, you will be prompted for a new code. MFA is no substitute for a weak password!<br><br>
+
+<strong>PS :</strong>
+ Scan the QR Code from any Authenticator application. Also save the QR code and your one-time use backup code to a safe place.
+  	</p>
+		<div class="clear">&nbsp;</div>
+		<input type="button" value="Display Backup Code" ng-click="displayBackupCode()" class="blueButton"/>
+		<div class="clear"></div>
+		<div class="backupCodeBox" ng-if="showBackupCode==true">{{data.secret.hex}}</div>
+		<div class="clear">&nbsp;</div>
+		<div class="clear">&nbsp;</div>
+		<a ng-if="data.mfaEnabled==1" href="javascript:void(0)" ng-click="showPopup('disable')" class="orangButton">Disable MFA</a>
+		<a ng-if="data.mfaEnabled==0" href="javascript:void(0)" ng-click="showPopup('enable')" class="greenButton">Enable MFA</a>
+		<div class="clear">&nbsp;</div>
+	  </div>
+	<div class="mfaRight">
+		<img src="{{data.qrcode}}">
+	</div>
+</div>
+</section>
+ 
